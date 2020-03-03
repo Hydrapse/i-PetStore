@@ -1,2 +1,2 @@
 # i-PetStore
-Welcome to I-PetStore！
+Welcome to I-PetStore!
