@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/includeTop :: #public_head(current_page='login')">
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-7">
+            <a href="/main.html">
+                <img class="img-responsive center-block" src="images/phonecat2.gif">
+            </a>
+        </div>
+        <div class="col-sm-5" id="form_div">
+            <form class="form-signin" action="login" method="post">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <input type="text" id="username" name="username" class="form-control" placeholder="username" autocomplete="off" required autofocus>
+                <input type="password" id="password"  name="password" class="form-control" placeholder="Password" required>
+                <div class="register-text">Not a member? <a href="#" id="register-a" data-toggle="modal" data-target="#registerModal">Register</a></div>
+
+                <button id="goLogin" class="btn btn-lg btn-warning btn-block" type="submit">Sign in</button>
+
+                <button style="display: none;" id="login-submit" class="btn btn-lg btn-warning btn-block" type="button" data-toggle="modal" data-target="#myVerificationModal">Sign in</button>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="/*z-index: 100;*/">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content register-content">
+            <form id="register-form" action="register" method="post" class="form-horizontal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Lovely Pets At Hydra Store!</h4>
+                </div>
+                <div class="modal-body" th:include="account/register :: #register_area">
+                    <!--注意 是include不是replace-->
+                    <!--register_area-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="register-close">Close</button>
+                    <button type="button" class="btn btn-warning" onclick="checkRegisterForm()" id="register-submit">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Verify Modal -->
+<div class="modal fade" id="myVerificationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div id="verify-content" class="modal-content center-block">
+
+            <!--验证码区域-->
+            <div id="slideBar" class="verify-body"></div>
+
+            <div class="verify-footer">
+                <a id="close-verify-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle" style="font-size: 21px;padding-right: 5px;"></span></a>
+                <a id="refresh-verify-btn"><span class="glyphicon glyphicon-repeat" style="font-size: 19px;"></span></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<script type="text/javascript" src="js/verification.js"></script>
+
+</body>
+
+</html>

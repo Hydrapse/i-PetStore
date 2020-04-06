@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<div id="Content">
+
+<div id="BackLink">
+    <a href="main">Return to Main Menu</a>
+</div>
+
+<div id="Cart" th:object="${session.cart}">
+
+    <h2>Shopping Cart</h2>
+
+        <table class="table table-hover" style="margin-bottom: 3px; background-color: rgb(248,250,252);">
+            <tr>
+                <th><b>Item ID</b></th>
+                <th><b>Product ID</b></th>
+                <th><b>Description</b></th>
+                <th><b>In Stock?</b></th>
+                <th><b>Quantity</b></th>
+                <th><b>List Price</b></th>
+                <th><b>Total Cost</b></th>
+                <th>&nbsp;</th>
+            </tr>
+            <tr th:if="*{numberOfItems} == 0 ">
+                <td colspan="8"><b>Your cart is empty.</b></td>
+            </tr>
+            <tr th:each="cartItem : *{cartItemList}">
+                <td>
+                    <a th:href="@{/item/} + ${cartItem.item.itemId} + '#navigation'">
+                        [[${cartItem.item.itemId}]]
+                    </a>
+                </td>
+                <td>[[${cartItem.item.product.productId}]]</td>
+                <td>
+                    [[${cartItem.item.attribute1}]] [[${cartItem.item.attribute2}]]
+                    [[${cartItem.item.attribute3}]] [[${cartItem.item.attribute4}]]
+                    [[${cartItem.item.attribute5}]] [[${cartItem.item.product.name}]]
+                </td>
+                <td>[[${cartItem.inStock}]]</td>
+                <td><form>
+                    <input style="width: 62px;" type="number" th:id="${cartItem.item.itemId}" th:name="${cartItem.item.itemId}"
+                           th:value="${cartItem.quantity}" min="1" th:max="${cartItem.item.quantity}"
+                           th:onblur="updateCart(this.id, this.value, [[${cartItem.quantity}]], [[${cartItem.item.quantity}]])"/>
+                </form></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(cartItem.item.listPrice, 0, 'COMMA', 2, 'POINT')}">
+                </td>
+                <td th:id="${cartItem.item.itemId} + 'Total'"
+                    th:text="'$' + ${#numbers.formatDecimal(cartItem.total, 0, 'COMMA', 2, 'POINT')}">
+                </td>
+                <td>
+                    <a class="Button btn-cartItem-remove" style="cursor: pointer;">Remove</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    Sub Total:
+                    <span id="subTotal" th:text="'$' + ${#numbers.formatDecimal(session.cart.subTotal, 0, 'COMMA', 2, 'POINT')}">
+                    </span>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+
+    <div th:if="*{numberOfItems} > 0">
+        <a onclick="defaultCheckout()" class="Button" href="#" style="padding: 7px;"
+           th:if="${session.order} == null">
+            Checkout&nbsp;
+        </a>
+        <a onclick="continueCheckout()" class="Button" href="#" style="padding: 7px;"
+           th:if="${session.order} != null">
+            Checkout&nbsp;
+        </a>
+        <a id="clearAll" style="cursor: pointer; color: #d9534f;"><i class="fa fa-trash fa-lg"></i></a>
+    </div>
+
+
+
+    <div class="input-group" style="margin: -10px 20px 0 auto; max-width: 50%;">
+        <input type="text" class="form-control" data-provide="typeahead" name="new-item-keyword"
+               id="new-cartItem-box" size="14" autocomplete="off" placeholder="Add New Items To Cart">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Add Item</button>
+        </span>
+    </div>
+
+</div>
+
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script type="text/javascript" th:src="@{/js/cart.js}"></script>
+</body>
+
+</html>

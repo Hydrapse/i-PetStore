@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+</head>
+
+<body>
+
+<footer id="public_footer">
+
+<div id="navBottom" class="footer bottom">
+    <div class="container-fluid">
+        <div id="footerRow" class="row">
+            <div class="col-sm-5">
+                <p>SUBSCRIBE TO OUR<br><br></p>
+                <h2>emailAddress</h2>
+                <form>
+                    <div class="input-group" style="max-width: 400px; opacity:0.7;">
+                     <input type="email" id="inputEmail" class="form-control" placeholder="Email address" autocomplete="off" required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="fa fa-send"></i></button>
+                        </span>
+                    </div>
+                </form>
+                <p style="padding-top: 10px;">This field must be a valid e-mail!</p>
+            </div>
+            <div class="col-sm-3">
+                <p>SHOP<br></p>
+                <a href="help.html"><h5 class="lightBlue">FAQ</h5></a>
+                <a href="help.html#Catalog"><h5 class="lightBlue">Product Catalog</h5></a>
+                <a href="help.html#ShoppingCart"><h5 class="lightBlue">Shopping Cart</h5></a>
+                <a href="help.html#OrderReview"><h5 class="lightBlue">Review Order</h5></a>
+            </div>
+            <div class="col-sm-2">
+                <p>GET INSPIRED<br></p>
+                <a th:href="@{/category#navigation(categoryId=BIRDS)}"><h5 class="lightBlue">Bird</h5></a>
+                <a th:href="@{/category#navigation(categoryId=CATS)}"><h5 class="lightBlue">Cat</h5></a>
+                <a th:href="@{/category#navigation(categoryId=DOGS)}"><h5 class="lightBlue">Dog</h5></a>
+                <a th:href="@{/category#navigation(categoryId=FISH)}"><h5 class="lightBlue">Fish</h5></a>
+            </div>
+            <div class="col-sm-2">
+                <p>MY PROFILE<br></p>
+                <a th:href="@{/login}" th:if="${session.account} == null">
+                    <h5 class="lightBlue">Login</h5>
+                </a>
+                <a th:href="@{/profile#navigation}" th:if="${session.account} != null">
+                    <h5 class="lightBlue">Account</h5>
+                </a>
+                <a href="#" onclick="signOut()"><h5 class="lightBlue">Sign out</h5></a>
+            </div>
+        </div>
+        <br><br><br>
+        <div class="row">
+            <div class="col-sm-3 col-sm-offset-9">© Retail 710 - MA TRUE CANNABIS</div>
+        </div>
+
+    </div>
+</div>
+
+<div class="MyBanner" th:if="${session.account} == null">
+    <a th:href="@{viewCategory(categoryId='BIRDS' + '#navigation')}"></a>
+</div>
+
+
+<div th:if="${session.account} != null" th:object="${session.account}"
+     th:switch="*{bannerOption}">
+    <div th:case="true" class="MyBanner" th:style="'background-image: url(/' + *{bannerName} + ');'">
+    </div>
+    <div th:case="false" class="MyBanner" style="display: none">
+    </div>
+</div>
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，必须放在script前边) -->
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+
+<!-- My JavaScript -->
+<script type="text/javascript" th:src="@{/js/account.js}"></script>
+<script type="text/javascript" th:src="@{/js/commonTop.js}"></script>
+<script type="text/javascript" th:src="@{/js/commonBottom.js}"}></script>
+
+<!-- 加载 Bootstrap 的所有 JavaScript 插件-->
+<script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+
+<!-- 搜索框自动填充 -->
+<script th:src="@{/js/bootstrap3-typeahead.js}"></script>
+
+<!--toastr 通知框插件-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+</footer>
+
+</body>
+
+</html>

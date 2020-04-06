@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<div id="Content" style="padding-bottom: 100px;">
+
+<div id="MyOrder">
+
+<h2>My Orders</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Order ID</th>
+        <th>Date</th>
+        <th>Total Price</th>
+    </tr>
+    <tr th:if="${orderList.size() == 0}">
+        <th colspan="3" style="font-weight: bold">
+            <a th:href="@{/main.html}">Do Not Have Any Order, Let's Buy Some Lovely Pets!</a>
+        </th>
+    </tr>
+    <tr th:each="order : ${orderList}">
+        <td>
+            <a th:href="@{/order/} + ${order.orderId}" th:text="${order.orderId}"></a>
+        </td>
+        <td th:text="${order.orderDateString}"></td>
+        <td th:text="'$' + ${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 2, 'POINT')}">
+        </td>
+    </tr>
+</table>
+
+</div>
+
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script>
+    $(".containerFont > h1").text("MY ORDER LIST");
+</script>
+
+</body>
+
+</html>

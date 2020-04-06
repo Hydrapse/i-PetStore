@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/includeTop :: #public_head(current_page='editAccount')">
+</head>
+
+<body>
+
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<form id="account-info-form" th:action="@{/profile}" method="post">
+<input type="hidden" name="_method" value="PUT"/><!--模拟PUT请求-->
+
+<div class="container marketing edit-account">
+
+    <div class="row featurette ed-row-1">
+        <div class="col-md-7">
+            <h1 class="featurette-heading">User <span class="text-muted">Information </span></h1>
+            <table class="table ed-table">
+                <tr>
+                    <input type="hidden" th:name="username" th:value="${account.username}"/>
+                    <td>User ID:</td>
+                    <td th:text="${account.username}"></td>
+                </tr>
+                <tr>
+                    <td>New password:</td>
+                    <td><input type="password" name="password"/></td>
+                </tr>
+                <tr>
+                    <td>Repeat password:</td>
+                    <td><input type="password" name="repeatedPassword"/></td>
+                </tr>
+                <tr><td></td></tr>
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-default submit-edit-account" type="button"
+                                data-toggle="modal" data-target="#myVerificationModal">
+                            Save
+                        </button>&nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-5">
+            <img class=" img-rounded img-responsive center-block ed-img" style="filter: grayscale(30%);" src="images/sitting.jpg" alt="Generic placeholder image">
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette ed-row-2">
+        <div class="col-md-5 col-md-push-7" >
+            <h2 class="featurette-heading" style="margin-top: 0; text-align: right;" >Account <span class="text-muted">Information</span></h2>
+
+            <table class="table ed-table" style="margin-left: auto;">
+                <tr>
+                    <td>First name:</td>
+                    <!--名-->
+                    <td><input type="text" name="firstName" th:value="${account.firstName}"></td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <!--姓-->
+                    <td><input type="text" name="lastName" th:value="${account.lastName}"></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="email" name="email" th:value="${account.email}"></td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td><input type="text" name="phone" th:value="${account.phone}"></td>
+                </tr>
+                <tr>
+                    <td>Address 1:</td>
+                    <td><input type="text" name="address1" th:value="${account.address1}"></td>
+                </tr>
+                <tr>
+                    <td>Address 2:</td>
+                    <td><input type="text" name="address2" th:value="${account.address2}"></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><input type="text" name="city" th:value="${account.city}"></td>
+                </tr>
+                <tr>
+                    <td>State:</td>
+                    <td><input type="text" name="state" th:value="${account.state}"></td>
+                </tr>
+                <tr>
+                    <td>Zip:</td>
+                    <td><input type="text" name="zip" th:value="${account.zip}"></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><input type="text" name="country" th:value="${account.country}"></td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="col-md-7 col-md-pull-5" >
+            <video class="img-rounded" id="videoAccount" width="90%" style="margin-top: 30px; filter: grayscale(20%);" loop muted>
+                <source src="images/muti1.mp4" type="video/mp4">
+            </video>
+            <script></script>
+        </div>
+    </div>
+
+    <hr class="featurette-divider ">
+
+    <div class="row featurette ed-row-3">
+        <div class="col-md-7">
+            <h2 class="featurette-heading" style="margin-top: 20px;"> Profile <span class="text-muted">Information</span></h2>
+
+            <table class="table ed-table">
+                <tr>
+                    <td>Language Preference:</td>
+                    <td>
+                        <select name="languagePreference">
+                            <option value="Chinese" th:selected="${account.languagePreference} == 'Chinese'" >
+                                Chinese
+                            </option>
+                            <option value="English" th:selected="${account.languagePreference} == 'English'">
+                                English
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Favourite Category:</td>
+                    <td>
+                        <select name="favouriteCategoryId" id="favCategory">
+                            <option value="BIRDS" th:selected="${account.favouriteCategoryId} == 'BIRDS'">
+                                BIRDS
+                            </option>
+                            <option value="CATS" th:selected="${account.favouriteCategoryId} == 'CATS'">
+                                CATS
+                            </option>
+                            <option value="DOGS" th:selected="${account.favouriteCategoryId} == 'DOGS'">
+                                DOGS
+                            </option>
+                            <option value="FISH" th:selected="${account.favouriteCategoryId} == 'FISH'">
+                                FISH
+                            </option>
+                            <option value="REPTILES" th:selected="${account.favouriteCategoryId} == 'REPTILES'">
+                                REPTILES
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="isMyListEnabled">Enable MyList</label></td>
+                    <td>
+                        <input type="checkbox" name="listOption" id="isMyListEnabled"
+                            th:checked="${account.listOption}">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="isMyBannerEnabled">Enable MyBanner</label></td>
+                    <td>
+                        <input type="checkbox" name="bannerOption" id="isMyBannerEnabled"
+                               th:checked="${account.bannerOption}"/>
+                    </td>
+                </tr>
+                <tr><td></td></tr>
+                <tr>
+                    <td>
+                        <button  class="btn btn-default submit-edit-account" type="button"
+                                data-toggle="modal" data-target="#myVerificationModal">
+                            Confirm
+                        </button>&nbsp;
+                        <a class="btn btn-primary" th:href="@{/orders}" role="button">View Order</a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="col-md-5">
+            <img id="profileGif" class=" img-rounded img-responsive center-block ed-img"
+                 style="filter: grayscale(20%);" th:src="@{images/birds_walk.gif}" alt="FavCategory">
+        </div>
+    </div>
+
+    <hr class="featurette-divider" style="margin-bottom: 20px;">
+
+</div>
+
+</form>
+
+<div class="modal fade" id="myVerificationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div id="verify-content" class="modal-content center-block">
+
+            <!--验证码区域-->
+            <div id="slideBar" class="verify-body"></div>
+
+            <div class="verify-footer">
+                <a id="close-verify-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle" style="font-size: 21px;padding-right: 5px;"></span></a>
+                <a id="refresh-verify-btn"><span class="glyphicon glyphicon-repeat" style="font-size: 19px;"></span></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script type="text/javascript" th:src="@{/js/profile.js}"></script>
+
+</body>
+
+</html>

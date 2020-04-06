@@ -1,0 +1,50 @@
+spring:
+
+   #调试环境dev 生产环境prod, 更改active切换配置
+  profiles:
+    active: dev
+
+  #关闭模板缓存，仅测试专用！热启动
+  thymeleaf:
+    cache: false
+
+  datasource:
+    username: Ikalos
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/i_petstore?serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    #指定数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    #数据源其他配置, DataSourceProperties中没有相关属性,默认无法绑定
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,slf4j
+    maxPoolPreparedStatementPerConnectionSize: 25
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+  #spring的欺骗请求
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+#Mybatis配置
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml #映射配置文件
+  config-location: classpath:mybatis/mybatis-config.xml #核心配置文件
+  type-aliases-package: org.csu.ipetstore.domain
+
+server:
+  port: 8081

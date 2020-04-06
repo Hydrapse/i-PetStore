@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<div id="Content">
+
+    <div id="BackLink">
+        <a th:href="@{/category(categoryId=${product.categoryId})}">
+            Return to [[${product.categoryId}]]
+        </a>
+    </div>
+
+    <div id="Product">
+
+        <h2 th:text="${product.name}"></h2>
+
+        <table class="table table-hover">
+            <tr>
+                <th>Item ID</th>
+                <th>Product ID</th>
+                <th>Description</th>
+                <th>List Price</th>
+                <th>&nbsp;</th>
+            </tr>
+            <!-- list -->
+                <tr th:each="item : ${itemList}">
+                    <td>
+                        <a th:href="@{/item/} + ${item.itemId} + '#navigation'" th:text="${item.itemId}">
+                        </a>
+                    </td>
+                    <td th:text="${item.product.productId}"></td>
+                    <td>
+                        [[${item.attribute1}]] [[${item.attribute2}]] [[${item.attribute3}]]
+                        [[${item.attribute4}]] [[${item.attribute5}]] [[${product.name}]]
+                    </td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(item.listPrice, 0, 'COMMA', 2, 'POINT')}">
+                    </td>
+                    <td>
+                        <a class="Button .addToCart" style="cursor: pointer;"
+                           th:onclick="addItemToCart([[${item.itemId}]])">
+                            Add to Cart
+                        </a>
+                    </td>
+                </tr>
+
+        </table>
+        <br>
+
+    </div>
+
+</div>
+
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script>
+    function addItemToCart(wid){
+        toastr.options.timeOut = 1800
+        toastr.options.positionClass =  "toast-bottom-left"
+
+        $.ajax({
+            url : "/cart",
+            type : "PATCH",
+            dataType : "text",
+            data : {
+                workingItemId : wid,
+                type: 'add',
+            },
+            success : function (data) {
+                if(data === 'lackItem'){
+                    toastr.warning("库存不足，暂时无法购买")
+                }
+                else{
+                    toastr.success("添加成功！")
+                }
+            },
+            error : function (e) {
+                console.log(e.status)
+                console.log(e.responseText)
+            }
+
+        })
+    }
+</script>
+
+</body>
+
+</html>
+
+
+
+
+

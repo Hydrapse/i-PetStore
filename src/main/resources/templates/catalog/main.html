@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<div id="Welcome" class="jumbotron">
+    <div class="container">
+        <h1>Wanted！</h1>
+        <p>They don't understand happiness, but they can read the notes that you laugh. They don't understand sadness, but they can listen to your inner pain. They use the silent guardian to bring you the most beautiful happiness.
+            Take care of them, although they are only our pets, but  also need our love.</p>
+        <p><a class="btn btn-primary btn-lg" th:href="@{/main.html}" role="button">Learn more »</a></p>
+    </div>
+</div>
+
+<div id="main-content" class="container-fluid">
+    <div class="row">
+        <div id="main-catalog" class="col-md-5">
+            <div class="list-group">
+                <a href="#main-content" class="list-group-item disabled">
+                    <b>Catalog</b>
+                </a>
+                <a th:href="@{/category#navigation(categoryId=FISH)}" class="list-group-item">
+                    <img th:src="@{/images/fish_icon.gif}"/> <span class="badge">4</span>
+                </a>
+                <a th:href="@{/category#navigation(categoryId=DOGS)}" class="list-group-item">
+                    <img th:src="@{/images/dogs_icon.gif}"/> <span class="badge">6</span>
+                </a>
+                <a th:href="@{/category#navigation(categoryId=CATS)}" class="list-group-item">
+                    <img th:src="@{/images/cats_icon.gif}"/> <span class="badge">2</span>
+                </a>
+                <a th:href="@{/category#navigation(categoryId=REPTILES)}" class="list-group-item">
+                    <img th:src="@{/images/reptiles_icon.gif}"/> <span class="badge">2</span>
+                </a>
+                <a th:href="@{/category#navigation(categoryId=BIRDS)}" class="list-group-item">
+                    <img th:src="@{/images/birds_icon.gif}"/> <span class="badge">2</span>
+                </a>
+                <a class="list-group-item list-group-item-warning" style="size: 14px"
+                   data-toggle="popover" data-placement="right" data-trigger="hover">
+                    Various Cute Pets!
+                </a>
+            </div>
+
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <!-- data-toggle="tooltip"-->
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapseOne" data-placement="right" data-trigger="hover">
+                                Where are we From？
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            New 'chip' Service! You can find where we from by a little
+                            chip which has been insert in my body.
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                Source control
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            Strictly select CAAC certified breeding houses.
+                            Scientific reproduction and strict control of baby quality
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="main-image-box" class="col-md-7">
+
+            <map id="MainMap" name="estoremap">
+                <area id="img-bigBird" alt="Birds" coords="179,154,100" th:href="@{/category#navigation(categoryId=BIRDS)}" shape="circle" />
+                <area id="img-fish" alt="Fish" coords="40,214,36" th:href="@{/category#navigation(categoryId=FISH)}" shape="circle"/>
+                <area id="img-dog" alt="Dogs" coords="98,282,36" th:href="@{/category#navigation(categoryId=DOGS)}" shape="circle"/>
+                <area id="img-reptile" alt="Reptiles" coords="179,305,36" th:href="@{/category#navigation(categoryId=REPTILES)}" shape="circle"/>
+                <area id="img-cat" alt="Cats" coords="267,282,36" th:href="@{/category#navigation(categoryId=CATS)}" shape="circle"/>
+                <area id="img-bird" alt="Birds" coords="320,213,36" th:href="@{/category#navigation(categoryId=BIRDS)}" shape="circle"/>
+            </map>
+            <img id="MainImage" class="img-responsive" th:src="@{/images/splash.gif}"  usemap="#estoremap" />
+
+        </div>
+    </div>
+
+    <hr class="featurette-divider" style="margin: 100px 0; ">
+
+    <div class="row" style="padding:  30px 100px;">
+        <div class="col-md-5"  style="padding: 20px 0;">
+            <a th:href="@{/product/FL-DSH-01}">
+                <img class="img-circle showcase" th:src="@{/images/kitten2.jpg}" alt="Ragdoll kitten" width="200" height="200">
+            </a>
+        </div>
+        <div class="col-md-7 text-center" style="background: rgb(248,250,252); padding: 20px 40px;">
+            <h2>Lovely Ragdoll kitten</h2>
+            <p style="font-family: 'Apple Braille'; font-weight: 600; font-size: 16px; text-align: left; padding: 0 10px;"><br>
+                Ragdoll cats are strict indoor cats. Don't let them go out and raise them outdoors.
+                The puppet cat is docile, but it is also a cat. The cat is very tsundere(傲娇),
+                and will run away from home when it is angry.
+            </p>
+            <p><a class="btn btn-default" th:href="@{/product(productId='FL-DSH-01')}" role="button">View details »</a></p>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>

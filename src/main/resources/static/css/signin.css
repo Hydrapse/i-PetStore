@@ -1,0 +1,142 @@
+body {
+  padding: 200px 150px;
+  background-color: rgb(186,117,169);
+}
+a:link, a:active{
+  text-decoration: none;
+}
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 15px auto 0 auto;
+  font-family: "Helvetica Neue", serif;
+  background: rgb(255,230,245);
+  border-radius: 10px;
+  opacity: 0.9;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.register-text{
+  margin: 10px 0;
+  font-size: 14px;
+}
+.signin-img{
+  width: 800px;
+  /*height: 300px;*/
+}
+
+.bs-callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+}
+
+.bs-callout h4 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.bs-callout code {
+  border-radius: 3px;
+}
+
+.bs-callout+.bs-callout {
+  margin-top: -5px;
+}
+
+.bs-callout-default {
+  border-left-color: #777;
+}
+
+.bs-callout-default h4 {
+  color: #777;
+}
+
+.bs-callout-primary {
+  border-left-color: #428bca;
+}
+
+.bs-callout-primary h4 {
+  color: #428bca;
+}
+
+.bs-callout-success {
+  border-left-color: #5cb85c;
+}
+
+.bs-callout-success h4 {
+  color: #5cb85c;
+}
+
+.bs-callout-danger {
+  border-left-color: #d9534f;
+}
+
+.bs-callout-danger h4 {
+  color: #d9534f;
+}
+
+.bs-callout-warning {
+  border-left-color: #f0ad4e;
+}
+
+.bs-callout-warning h4 {
+  color: #f0ad4e;
+}
+
+.bs-callout-info {
+  border-left-color: #5bc0de;
+}
+
+.bs-callout-info h4 {
+  color: #5bc0de;
+}
+
+/*--------------------------register css--------------------------*/
+.register-content{
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: rgb(255,245,250);
+  opacity: 0.9;
+}
+.padding-reg{
+  padding-right: 100px;
+  padding-left: 50px;
+}
+.padding-ico{
+  visibility: hidden;
+  margin-right: 85px;
+}
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.csu.ipetstore.mapper.ProductMapper">
+
+    <cache/>
+
+    <select id="getProductListByCategory" parameterType="String" resultType="Product">
+    SELECT
+      PRODUCTID,
+      NAME,
+      DESCN as description,
+      CATEGORY as categoryId
+    FROM PRODUCT
+    WHERE CATEGORY = #{categoryId}
+    </select>
+
+    <select id="getProduct" parameterType="String" resultType="Product">
+    SELECT
+      PRODUCTID,
+      NAME,
+      DESCN as description,
+      CATEGORY as categoryId
+    FROM PRODUCT
+    WHERE PRODUCTID = #{productId}
+    </select>
+
+    <select id="searchProductList" parameterType="String" resultType="Product">
+    SELECT
+      PRODUCTID,
+      NAME,
+      DESCN as description,
+      CATEGORY as categoryId
+    from PRODUCT
+    WHERE lower(NAME) like #{keywords}
+    </select>
+
+    <select id="searchCategoryProductList" parameterType="String" resultType="Product">
+    SELECT
+        PRODUCTID,
+        NAME,
+        DESCN AS description,
+        CATEGORY AS categoryId
+    FROM PRODUCT
+    WHERE lower(CATEGORY) LIKE #{keywords}
+    </select>
+
+    <select id="searchProductNameList" parameterType="String" resultType="String">
+    SELECT NAME FROM PRODUCT WHERE lower(NAME) LIKE #{keywords}
+    </select>
+</mapper>

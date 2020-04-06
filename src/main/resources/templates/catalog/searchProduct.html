@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<div id="Content">
+
+    <div id="BackLink">
+        <a th:href="@{/main.html}">
+            Return to Main Menu
+        </a>
+    </div>
+
+    <div id="Search">
+
+        <table class="table table-bordered" style="margin: 0;">
+            <tr>
+                <th></th>
+                <th>Product ID</th>
+                <th>Name</th>
+            </tr>
+
+            <!-- list -->
+                <tr th:each="prod : ${productList}">
+                    <td style=" background-color: rgb(245,245,245); font-size: 14px;">
+                        <a th:href="@{/product/} + ${prod.productId} + '#navigation'"
+                            th:utext="${prod.description}">
+                        </a>
+                    </td>
+                    <td><b>[[${prod.productId}]]</b></td>
+                    <td>[[${prod.name}]]</td>
+                </tr>
+        </table>
+    </div>
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+</body>
+
+</html>

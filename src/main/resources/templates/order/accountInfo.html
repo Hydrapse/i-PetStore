@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<div id="Content" style="padding-bottom: 100px;">
+    <div id="Order1">
+        <form th:action="@{/order/accountInfo}" method="post" th:object="${order}">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th colspan=2>Payment Details</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>Card Type:</td>
+                    <td>
+                        <select name="cardType">
+                            <option value="Visa">Visa</option>
+                            <option value="MasterCard">MasterCard</option>
+                            <option value="American Express">American Express</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Card Number:</td>
+                    <td>
+                        <input type="text" th:field="*{creditCard}">
+                        * Use a fake number!
+                    </td>
+                </tr>
+                <tr>
+                    <td>Expiry Date (MM/YYYY):</td>
+                    <td>
+                        <input type="text" th:field="*{expiryDate}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th colspan=2>Billing Address</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>First name:</td>
+                    <td>
+                        <input type="text" th:field="*{billToFirstName}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td>
+                        <input type="text" th:field="*{billToLastName}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address 1:</td>
+                    <td>
+                        <input type="text" th:field="*{billAddress1}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address 2:</td>
+                    <td>
+                        <input type="text" th:field="*{billAddress2}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td>
+                        <input type="text" th:field="*{billCity}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>State:</td>
+                    <td>
+                        <input type="text" th:field="*{billState}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zip:</td>
+                    <td>
+                        <input type="text" th:value="*{billZip}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td>
+                        <input type="text" th:field="*{billCountry}">
+                    </td>
+                </tr>
+                </tbody>
+
+                <tr>
+                    <td colspan=2>
+                        <input id="shippingAddressRequired" type="checkbox" name="isShip">
+                        <label for="shippingAddressRequired">Ship to different address...</label>
+                    </td>
+
+                </tr>
+
+            </table>
+
+            <table class="table table-striped" id="shipAddressTable" style="display: none;">
+                <thead>
+                <tr>
+                    <th colspan=2>Edit Shipping Address</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>First name:</td>
+                    <td><input type="text" th:field="*{shipToFirstName}"/></td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td><input type="text" th:field="*{shipToLastName}"/></td>
+                </tr>
+                <tr>
+                    <td>Address 1:</td>
+                    <td><input type="text" th:field="*{shipAddress1}"/></td>
+                </tr>
+                <tr>
+                    <td>Address 2:</td>
+                    <td><input type="text" th:field="*{shipAddress2}"/></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><input type="text" th:field="*{shipCity}"/></td>
+                </tr>
+                <tr>
+                    <td>State:</td>
+                    <td>
+                        <input type="text" th:field="*{shipState}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zip:</td>
+                    <td><input type="text" th:field="*{shipZip}"/></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><input type="text" th:field="*{shipCountry}"/></td>
+                </tr>
+                </tbody>
+
+            </table>
+
+            <input type="submit" name="newOrder" value="Continue" />
+
+        </form>
+
+    </div>
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script>
+    $(".containerFont > h1").text("VIEW ORDER FORM");
+</script>
+
+<script th:src="@{/js/order.js}"></script>
+
+</body>
+
+</html>

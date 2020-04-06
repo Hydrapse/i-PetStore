@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<div id="Content" style="padding-bottom: 100px;">
+
+<ul class="message">
+    <li>Thank you, your order has been submitted.</li>
+</ul>
+
+<div id="BackLink" style="">
+    <a th:href="@{/orders}">Return to my orders</a>
+</div>
+
+
+    <div id="Order3">
+
+    <table class="table table-bordered">
+        <tr>
+            <th align="center" colspan="2">
+                Order #[[${order.orderId}]]
+                [[${order.orderDateString}]]
+            </th>
+        </tr>
+        <tr class="active">
+            <th colspan="2">Payment Details</th>
+        </tr>
+        <tr>
+            <td>Card Type:</td>
+            <td th:text="${order.cardType}" /></td>
+        </tr>
+        <tr>
+            <td>Card Number:</td>
+            <td th:text="${order.creditCard}" /></td>
+        </tr>
+        <tr>
+            <td>Expiry Date (MM/YYYY):</td>
+            <td th:text="${order.expiryDate}"></td>
+        </tr>
+        <tr class="active">
+            <th colspan="2">Billing Address</th>
+        </tr>
+        <tr>
+            <td>First name:</td>
+            <td th:text="${order.billToFirstName}"></td>
+        </tr>
+        <tr>
+            <td>Last name:</td>
+            <td th:text="${order.billToLastName}"></td>
+        </tr>
+        <tr>
+            <td>Address 1:</td>
+            <td th:text="${order.billAddress1}" ></td>
+        </tr>
+        <tr>
+            <td>Address 2:</td>
+            <td th:text="${order.billAddress2}"></td>
+        </tr>
+        <tr>
+            <td>City:</td>
+            <td th:text="${order.billCity}"></td>
+        </tr>
+        <tr>
+            <td>State:</td>
+            <td th:text="${order.billState}"></td>
+        </tr>
+        <tr>
+            <td>Zip:</td>
+            <td th:text="${order.billZip}"></td>
+        </tr>
+        <tr>
+            <td>Country:</td>
+            <td th:text="${order.billCountry}"></td>
+        </tr>
+        <tr class="active">
+            <th colspan="2">Shipping Address</th>
+        </tr>
+        <tr>
+            <td>First name:</td>
+            <td th:text="${order.shipToFirstName}"></td>
+        </tr>
+        <tr>
+            <td>Last name:</td>
+            <td th:text="${order.shipToLastName}"></td>
+        </tr>
+        <tr>
+            <td>Address 1:</td>
+            <td th:text="${order.shipAddress1}"></td>
+        </tr>
+        <tr>
+            <td>Address 2:</td>
+            <td th:text="${order.shipAddress2}"></td>
+        </tr>
+        <tr>
+            <td>City:</td>
+            <td th:text="${order.shipCity}"></td>
+        </tr>
+        <tr>
+            <td>State:</td>
+            <td th:text="${order.shipState}"></td>
+        </tr>
+        <tr>
+            <td>Zip:</td>
+            <td th:text="${order.shipZip}"></td>
+        </tr>
+        <tr>
+            <td>Country:</td>
+            <td th:text="${order.shipCountry}"></td>
+        </tr>
+        <tr>
+            <td>Courier:</td>
+            <td th:text="${order.courier}"></td>
+        </tr>
+        <tr>
+            <td colspan="2">Status: [[${order.status}]]</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table class="table" style="background-color: rgb(249,250,252);">
+                    <tr class="active">
+                        <th>Item ID</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total Cost</th>
+                    </tr>
+                    <tr th:each="lineItem : ${order.lineItems}">
+                        <td>
+                            <a th:href="@{/item/} + ${lineItem.item.itemId}">
+                                [[${lineItem.item.itemId}]]
+                            </a>
+                        </td>
+                        <td th:if="${lineItem.item} != null">
+                            [[${lineItem.item.attribute1}]]
+                            [[${lineItem.item.attribute2}]]
+                            [[${lineItem.item.attribute3}]]
+                            [[${lineItem.item.attribute4}]]
+                            [[${lineItem.item.attribute5}]]
+                            [[${lineItem.item.product.name}]]
+                        </td>
+                        <td th:if="${lineItem.item} == null">
+                            <i>{description unavailable}</i>
+                        </td>
+                        <td>
+                            [[${lineItem.quantity}]]
+                        </td>
+                        <td th:text="'$' + ${#numbers.formatDecimal(lineItem.unitPrice, 0, 'COMMA', 2, 'POINT')}">
+                        </td>
+                        <td th:text="'$' + ${#numbers.formatDecimal(lineItem.total, 0, 'COMMA', 2, 'POINT')}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="5" >
+                            Total: $[[${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 2, 'POINT')}]]
+                        </th>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+    </table>
+
+    </div>
+
+</div>
+
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script>
+    $(".containerFont > h1").text("REVIEW CONFIRMED ORDER");
+</script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+<div id="Content">
+    <div id="BackLink">
+        <a th:href="@{/product/} + ${product.productId}">Return to [[${product.name}]]</a>
+    </div>
+
+    <div id="Item">
+        <table class="table">
+            <tr>
+                <td id="Portrait" th:utext="${product.description}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>[[${item.itemId}]]</b>
+                </td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold; font-size: 18px;">
+                    [[${item.attribute1}]] [[${item.attribute2}]]
+                    [[${item.attribute3}]] [[${item.attribute4}]]
+                    [[${item.attribute5}]] [[${product.name}]]
+                </td>
+            </tr>
+            <tr>
+                <td>[[${product.name}]]</td>
+            </tr>
+            <tr>
+                <td th:if="${item.quantity} <= 0">
+                    Back ordered.
+                </td>
+                <td th:unless="${item.quantity} <= 0">
+                    [[${item.quantity}]] in stock.
+                </td>
+            </tr>
+            <tr>
+                <td th:text="'$' + ${#numbers.formatDecimal(item.listPrice, 0, 'COMMA', 2, 'POINT')}">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a class="Button .addToCart" style="cursor: pointer;"
+                        th:onclick="addItemToCart([[${item.itemId}]])">
+                        Add to Cart
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script>
+function addItemToCart(wid){
+    toastr.options.timeOut = 1800
+    toastr.options.positionClass =  "toast-bottom-left"
+
+    $.ajax({
+        url : "/cart",
+        type : "PATCH",
+        dataType : "text",
+        data : {
+            workingItemId : wid,
+            type: 'add',
+
+        },
+        success : function (data) {
+            if(data === 'lackItem'){
+                toastr.warning("库存不足，暂时无法购买")
+            }
+            else{
+                toastr.success("添加成功！")
+            }
+        },
+        error : function (e) {
+            console.log(e.status)
+            console.log(e.responseText)
+        }
+
+    })
+}
+</script>
+
+
+</body>
+
+</html>
+
+
+

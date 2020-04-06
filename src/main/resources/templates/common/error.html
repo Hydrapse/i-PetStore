@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+    <div id="Error">
+        ERROR:[[${session.message}]]
+    </div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+</body>
+
+</html>

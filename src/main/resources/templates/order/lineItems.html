@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/includeTop :: #public_head">
+</head>
+
+<body>
+<header th:replace="common/includeTop :: #public_header">
+</header>
+
+
+<div id="Content" style="padding-bottom: 100px;">
+    <div>
+    <div id="Order2">
+        <h3>Order Information</h3>
+        <table class="table table-hover" style="max-width: 49%;">
+            <tr>
+                <th>Contact</th>
+                <td>[[${session.account.phone}]]</td>
+            </tr>
+            <tr>
+                <th>Ship To</th>
+                <td>
+                    [[${order.shipAddress1}]] [[${order.shipAddress2}]] [[${order.shipCity}]]
+                        [[${order.shipState}]] [[${order.shipZip}]], [[${order.shipCountry}]]
+                </td>
+            </tr>
+            <tr th:if="${isShip}">
+                <th>Bill To</th>
+                <td>
+                    [[${order.billAddress1}]] [[${order.billAddress2}]] [[${order.billCity}]]
+                    [[${order.billState}]] [[${order.billZip}]], [[${order.billCountry}]]
+                </td>
+            </tr>
+            <tr class="active" th:unless="${isShip}">
+                <td colspan="2" style="text-align: center; color: #444444; font-weight: 600;">Billing Address Same As Shipping Address</td>
+            </tr>
+            <tr>
+                <td colspan="2"><a th:href="@{/order/accountInfo(status='continue')}">CHANGE</a></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <h3>Take care of your pets!</h3>
+        <table  class="table" style="max-width: 83%;">
+            <tr>
+                <th></th>
+                <th>Quantity</th>
+                <th>UnitPrice</th>
+            </tr>
+            <tr th:each="cartItem : ${order.lineItems}">
+                <td id="Portrait">
+                    <a th:href="@{/product/} + ${cartItem.item.product.productId}"
+                       th:utext="${cartItem.item.product.description}">
+                    </a>
+                </td>
+                <td style="text-align: center;" th:text="${cartItem.quantity}"></td>
+                <td style="text-align: center;" th:text="'$' + ${#numbers.formatDecimal(cartItem.unitPrice, 0, 'COMMA', 2, 'POINT')}">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" >
+                    <strong>SUB TOTAL: </strong>$[[${#numbers.formatDecimal(session.cart.subTotal, 0, 'COMMA', 2, 'POINT')}]]
+                </td>
+            </tr>
+        </table>
+
+        <br>
+
+        <a class="Button" style="cursor: pointer;" onclick="confirmOrder()">Confirm Order</a>
+    </div>
+
+    </div>
+
+</div>
+
+<footer th:replace="common/includeBottom :: #public_footer">
+</footer>
+
+<script>
+    $(".containerFont > h1").text("CONFIRM FINAL ORDER");
+</script>
+
+<script th:src="@{/js/order.js}"></script>
+
+</body>
+
+</html>

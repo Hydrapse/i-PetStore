@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.csu.ipetstore.mapper.CartItemMapper">
+    <insert id="insertCartItemList">
+        INSERT INTO CARTITEM (USERID, ITEMID, QUANTITY, TOTAL)
+        VALUES
+        <foreach collection="cartItemList" item="cartItem" separator=",">
+            (#{username},#{cartItem.item.itemId},#{cartItem.quantity},#{cartItem.total})
+        </foreach>
+    </insert>
+
+    <delete id="deleteCartItemList" parameterType="Account">
+        DELETE FROM CARTITEM WHERE USERID = #{username}
+    </delete>
+
+    <select id="getCartItemList" parameterType="Account" resultType="CartItem">
+    SELECT
+        I.ITEMID AS "item.itemId",
+        LISTPRICE AS "item.listPrice",
+         UNITCOST AS "item.unitCost",
+         SUPPLIER AS "item.supplierId",
+         I.PRODUCTID AS "item.productId",
+         P.PRODUCTID AS "item.product.productId",
+         NAME AS "item.product.name",
+         DESCN AS "item.product.description",
+         CATEGORY AS "item.product.categoryId",
+         STATUS AS "item.status",
+         ATTR1 AS "item.attribute1",
+         ATTR2 AS "item.attribute2",
+         ATTR3 AS "item.attribute3",
+         ATTR4 AS "item.attribute4",
+         ATTR5 AS "item.attribute5",
+         QTY AS "item.quantity",
+         QUANTITY,
+         TOTAL
+         FROM ITEM I, INVENTORY V, PRODUCT P, CARTITEM C
+         WHERE P.PRODUCTID = I.PRODUCTID
+         AND I.ITEMID = V.ITEMID
+         AND I.ITEMID = C.ITEMID
+         AND C.USERID = #{username}
+    </select>
+</mapper>
