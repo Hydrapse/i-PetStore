@@ -96,6 +96,7 @@
     -->
     <!--包内日志级别-->
     <logger name="org.csu.ipetstore.controller" level="debug" />
+
     <!-- Spring framework logger -->
     <logger name="org.springframework" level="info" additivity="false"></logger>
 
