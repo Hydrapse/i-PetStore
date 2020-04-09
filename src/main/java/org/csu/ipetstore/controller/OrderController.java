@@ -1,7 +1,9 @@
 package org.csu.ipetstore.controller;
 
+import com.alibaba.fastjson.JSON;
 import org.csu.ipetstore.domain.Account;
 import org.csu.ipetstore.domain.Cart;
+import org.csu.ipetstore.domain.LineItem;
 import org.csu.ipetstore.domain.Order;
 import org.csu.ipetstore.service.OrderService;
 import org.slf4j.Logger;
@@ -10,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,7 +30,7 @@ public class OrderController {
 
     //个人信息填写页面
     @GetMapping("/order/accountInfo")
-    public String viewAccountInfo(@RequestParam(value = "status")String status,
+    public String viewAccountInfo(@RequestParam(value = "status", defaultValue = "default")String status,
                                 HttpSession session,
                                 Model model){
         Order order = (Order)session.getAttribute("order");
@@ -50,7 +50,7 @@ public class OrderController {
         }
         else {
             //重新创建订单
-            if(StringUtils.isEmpty(status) || "default".equals(status) || order == null){
+            if("default".equals(status) || order == null){
                 order = new Order();
                 order.initOrder(account, cart);
                 session.setAttribute("order", order);
@@ -73,7 +73,9 @@ public class OrderController {
         Account account = (Account) session.getAttribute("account");
         Cart cart = (Cart)session.getAttribute("cart");
 
+
         order.initOrder(account, cart);
+
         session.setAttribute("order", order);
         logger.info("订单：确认用户信息");
 
@@ -94,6 +96,7 @@ public class OrderController {
         }
 
         Order order = (Order) session.getAttribute("order");
+
         if(order.getLineItems().size() <= 0){
             logger.warn("未确认购物车列表，返回购物车");
             return "redirect:/cart";
@@ -105,22 +108,20 @@ public class OrderController {
         return "order/lineItems";
     }
 
+    @ResponseBody
     @PostMapping("/order/lineItems")
     public String confirmOrder(HttpSession session){
         Order order = (Order) session.getAttribute("order");
         if(order == null){
             logger.warn("订单信息为空，返回个人信息填写页面");
-            return "redirect:/order/accountInfo";
+            return "/order/accountInfo|";
         }
         if(order.getLineItems().size() <= 0){
             logger.warn("未确认购物车列表，返回购物车");
-            return "redirect:/cart";
+            return "/cart|";
         }
 
-        //设置订单日期
-        order.setOrderDate(new Date());
-        orderService.insertOrder(order);
-        logger.info("订单 " + order.getOrderId() + " 提交成功");
+        List<LineItem> errorList = orderService.insertOrder(order);
 
         //结束一笔订单
         session.setAttribute("cart", new Cart());
@@ -129,7 +130,14 @@ public class OrderController {
         //查看已成交订单
         String orderId = String.valueOf(order.getOrderId());
 
-        return "redirect:/order/" + orderId;
+        String strRedirect = "/order/" + orderId + "|";
+
+        if(errorList.isEmpty()){
+            return strRedirect;
+        } else{
+            logger.warn("部分货物购买失败");
+            return strRedirect + JSON.toJSONString(errorList);
+        }
     }
 
     @GetMapping("/order/{oid}")

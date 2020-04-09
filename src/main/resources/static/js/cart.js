@@ -22,7 +22,7 @@ function sendRequestUpdateCart(itemId, quantity) {
 
 
 function updateCart(itemId, value, last_quantity, totalQuantity) {
-    var input = document.getElementById(itemId);
+    var input = document.getElementsByName(itemId)[0];
     if (lastQuantity == null) {
         lastQuantity = last_quantity;
     }
@@ -73,48 +73,45 @@ function continueCheckout(){
 
 $(function () {
     location.href = "#navigation";
-
-    $rbtn = $(".btn-cartItem-remove");
-    $rbtn.on('click',function () {
+    
+    // 动态生成的元素要通过事件委托来处理，委托对象必须一直存在
+    $("table").on('click', '.btn-cartItem-remove', function () {
         $(this).css("visibility","hidden");
         $tr = $(this).parent().parent();
         $tr.addClass("danger");
+
         setTimeout(function(){
             $tr.addClass("animated fadeOutLeft");
             setTimeout(function () {
-                removeCartItem();
+                removeCartItem($tr.attr('id'));
                 $tr.remove();
             },700)
         },700);
 
     });
 
-    function removeCartItem() {
+    function removeCartItem(itemId) {
         var arr = $("table").find("tr");
 
         //在前台更新数据,仅在不是最后一项时
-        if (arr.length >3){
-            var total = $tr.children("td:nth-child(7)").text().trim();
-            var itemTotal = total.substring(1, total.length);
-            console.info(itemTotal);
-            var subTotal = $("#subTotal").text().substring(1, total.length);
-            var newSub = parseFloat(subTotal) - parseFloat(itemTotal);
-            $("#subTotal").text("$" + newSub);
+        if (arr.length > 3){
+            var totalId = '#'+ itemId + 'Total'
+            var itemTotal = parseFloat(formatCurrency($(totalId).text()))
+            var newSub = parseFloat(formatCurrency($("#subTotal").text())) - itemTotal
+            $("#subTotal").text("$" + formatCurrency(newSub));
         }
 
         //在后台购物车删除货物
-        var str = $tr.children(":first-child").text().trim();
         $.ajax({
             url : "/cart",
             type : "PATCH",
             dataType : "text",
             data : {
-                workingItemId: str,
+                workingItemId: itemId,
                 type: 'remove'
             },
             success : function (data) {
-                window.location.href = "cart";
-                $("#new-cartItem-box").val("");
+                console.info("购物车: 货物" + itemId +"删除成功")
             }
         })
 
@@ -123,18 +120,29 @@ $(function () {
             window.location.href = "cart";
         }
     };
-
+    
     $("#clearAll").click(function () {
         if (confirm("Confirm To CLear All Items?")){
             $("table").css("background-color","#fff5f5")
 
             setTimeout(function (){
                 $("table").addClass("animated hinge");
-                $.get("removeItemFromCart?workingItemId=ClearAll",function () {
-                    setTimeout(function () {
-                        window.location.href = "viewCart";
-                    }, 1000);
-                });
+
+                $.ajax({
+                    url : "/cart",
+                    type : "PATCH",
+                    dataType : "text",
+                    data : {
+                        workingItemId: "ClearAll",
+                        type: 'remove'
+                    },
+                    success : function (data) {
+                        console.info("清空购物车")
+                        setTimeout(function () {
+                            window.location.href = "cart";
+                        }, 1000);
+                    }
+                })
             },800);
         }
 
@@ -191,8 +199,108 @@ $(function () {
                             type: 'add',
                         },
                         success : function (data) {
-                            window.location.href = "cart";
                             $("#new-cartItem-box").val("");
+                            var arr = data.split("|");
+
+                            //toastr 提示框
+                            toastr.options.timeOut = 1800
+                            toastr.options.positionClass =  "toast-bottom-left"
+
+                            if(arr[0] === 'lackItem'){
+                                toastr.warning("库存不足，暂时无法购买")
+                            }
+                            else if(arr[0] === 'success'){
+                                toastr.success("添加成功！")
+                                // window.location.href = "cart";
+
+                                var item = $.parseJSON(arr[1]);
+
+                                var subTotal = parseFloat(formatCurrency($("#subTotal").text())) + item.listPrice
+                                $("#subTotal").text('$' + formatCurrency(subTotal))
+
+                                var isExist = false
+                                $("tr").each(function () {
+                                    if(this.id === item.itemId){
+                                        isExist = true
+                                    }
+                                })
+
+                                //直接添加至已有列表项
+                                if(isExist){
+                                    console.log("已经有重复项")
+                                    var input = document.getElementsByName(item.itemId)[0];
+                                    input.value++;
+
+                                    var totalId = '#'+ item.itemId + 'Total'
+                                    var itemTotal = parseFloat(formatCurrency($(totalId).text())) + item.listPrice
+                                    $(totalId).text('$' + formatCurrency(itemTotal))
+                                }
+                                else{
+                                    if(item.attribute1 === undefined){
+                                        item.attribute1 = ""
+                                    }
+                                    if(item.attribute2 === undefined){
+                                        item.attribute2 = ""
+                                    }
+                                    if(item.attribute3 === undefined){
+                                        item.attribute3 = ""
+                                    }
+                                    if(item.attribute4 === undefined){
+                                        item.attribute4 = ""
+                                    }
+                                    if(item.attribute5 === undefined){
+                                        item.attribute5 = ""
+                                    }
+
+                                    //添加新行
+                                    var arr = $("tr:eq(1)").find("td")
+                                    if(arr.length <= 1){
+                                        $("tr:eq(1)").hide()
+                                    }
+                                    $("tr:last").before(
+                                        "           <tr id='" + item.itemId + "'>" +
+                                        "                <td>" +
+                                        "                    <a href=\"/item/" + item.itemId + "#navigation\">" +
+                                        "                        " + item.itemId+
+                                        "                    </a>" +
+                                        "                </td>" +
+                                        "                <td>" + item.product.productId + "</td>" +
+                                        "                <td>" +
+                                                            item.attribute1 + " " +item.attribute2 + " " +
+                                                            item.attribute3 + " " + item.attribute4 + " " +
+                                                            item.attribute5 + " " + item.product.name +
+                                        "                </td>" +
+                                        "                <td>" +
+                                        "                    true" +
+                                        "                </td>" +
+                                        "                <td>" +
+                                        "                    <form>" +
+                                        "                        <input class=\"quantity\" type=\"number\" id=\"" + item.itemId + "\" name=\"" + item.itemId + "\"" +
+                                        "                               value=\"1\" min=\"1\" max=\" " + item.quantity + "\"" +
+                                        "                               onblur=\"updateCart(this.id, this.value, 1, " + item.quantity + ")\"/>" +
+                                        "                    </form>" +
+                                        "                </td>" +
+                                        "                <td>$" + formatCurrency(item.listPrice) + "</td>" +
+                                        "                <td id=\"" + item.itemId + "Total\">$" + formatCurrency(item.listPrice) +"</td>" +
+                                        "                <td>" +
+                                        "                    <a class=\"Button btn-cartItem-remove\" style=\"cursor: pointer;\">Remove</a>" +
+                                        "                </td>" +
+                                        "            </tr>");
+
+                                    console.log($('#clearAll').length)
+                                    //第一次添加时补上结账行
+                                    if($('#clearAll').length <= 0){
+                                        $("table").append("" +
+                                            "<div>" +
+                                            "        <a onclick=\"defaultCheckout()\" class=\"Button\" href=\"#\" style=\"padding: 7px;\"\n" +
+                                            "           th:if=\"${session.order} == null\">" +
+                                            "            Checkout&nbsp;" +
+                                            "        </a>" +
+                                            "        <a id=\"clearAll\" style=\"cursor: pointer; color: #d9534f;\"><i class=\"fa fa-trash fa-lg\"></i></a>\n" +
+                                            "    </div>")
+                                    }
+                                }
+                            }
                         }
                     })
                 }, 300);
@@ -203,5 +311,27 @@ $(function () {
 
     });
 
+    //设置悬浮窗
+    $("[data-toggle='popover']").each(function () {
+        var el = $(this)
+        el.popover({
+            html : true,
+            title : function () {
+                if(el.hasClass('empty-stack') || el.hasClass('lack-stack'))
+                var data = "<a>"+ el.attr('id') +"</a>"
+                return data
+            },
+            delay:{show:500, hide:50},
+            content : function () {
+                var data = null
+                if(el.hasClass('empty-stack'))
+                    data= "<span>该宠物暂无库存</span>"
+                else if (el.hasClass('lack-stack'))
+                    data = "<span>该宠物库存不足，数量调整至 <b>" + el.find('.quantity').val() +"</b></span>"
+                return data
+            },
+            animation: true
+        });
+    })
 
 });

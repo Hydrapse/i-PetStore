@@ -48,14 +48,14 @@
                 <th>Quantity</th>
                 <th>UnitPrice</th>
             </tr>
-            <tr th:each="cartItem : ${order.lineItems}">
+            <tr th:each="lineItem : ${order.lineItems}"> <!--th:if="${lineItem.item.quantity > 0}"-->
                 <td id="Portrait">
-                    <a th:href="@{/product/} + ${cartItem.item.product.productId}"
-                       th:utext="${cartItem.item.product.description}">
+                    <a th:href="@{/product/} + ${lineItem.item.product.productId}"
+                       th:utext="${lineItem.item.product.description}">
                     </a>
                 </td>
-                <td style="text-align: center;" th:text="${cartItem.quantity}"></td>
-                <td style="text-align: center;" th:text="'$' + ${#numbers.formatDecimal(cartItem.unitPrice, 0, 'COMMA', 2, 'POINT')}">
+                <td style="text-align: center;" th:text="${lineItem.quantity}"></td>
+                <td style="text-align: center;" th:text="'$' + ${#numbers.formatDecimal(lineItem.unitPrice, 0, 'COMMA', 2, 'POINT')}">
                 </td>
             </tr>
             <tr>

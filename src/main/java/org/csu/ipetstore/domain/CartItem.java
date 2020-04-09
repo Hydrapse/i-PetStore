@@ -46,13 +46,14 @@ public class CartItem implements Serializable {
     }
 
     public void incrementQuantity() {
-        quantity++;
+        quantity = Math.abs(quantity) + 1;
         calculateTotal();
     }
 
     private void calculateTotal() {
         if (item != null && item.getListPrice() != null) {
-            total = item.getListPrice().multiply(new BigDecimal(quantity));
+            total = item.getListPrice().multiply(
+                    new BigDecimal(Math.abs(quantity)));
         } else {
             total = null;
         }

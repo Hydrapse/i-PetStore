@@ -63,38 +63,6 @@
 <footer th:replace="common/includeBottom :: #public_footer">
 </footer>
 
-<script>
-function addItemToCart(wid){
-    toastr.options.timeOut = 1800
-    toastr.options.positionClass =  "toast-bottom-left"
-
-    $.ajax({
-        url : "/cart",
-        type : "PATCH",
-        dataType : "text",
-        data : {
-            workingItemId : wid,
-            type: 'add',
-
-        },
-        success : function (data) {
-            if(data === 'lackItem'){
-                toastr.warning("库存不足，暂时无法购买")
-            }
-            else{
-                toastr.success("添加成功！")
-            }
-        },
-        error : function (e) {
-            console.log(e.status)
-            console.log(e.responseText)
-        }
-
-    })
-}
-</script>
-
-
 </body>
 
 </html>

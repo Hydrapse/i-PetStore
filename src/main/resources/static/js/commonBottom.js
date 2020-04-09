@@ -1,3 +1,54 @@
+
+//黑科技！"123231231".toLocaleString('en-US') 123,231,231.0
+//货币格式化
+function formatCurrency(num) {
+    num = num.toString().replace(/\$|\,/g,'');
+    if(isNaN(num))
+        num = "0";
+    sign = (num == (num = Math.abs(num)));
+    num = Math.floor(num*100+0.50000000001);
+    cents = num%100;
+    num = Math.floor(num/100).toString();
+    if(cents<10)
+        cents = "0" + cents;
+    for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+        num = num.substring(0,num.length-(4*i+3))+','+
+            num.substring(num.length-(4*i+3));
+    return (((sign)?'':'-') + num + '.' + cents);
+}
+
+//在商品列表页面添加至购物车
+function addItemToCart(wid){
+    toastr.options.timeOut = 3000
+    toastr.options.positionClass =  "toast-bottom-left"
+    toastr.options.onclick = function(){
+        window.location.href = "/cart"
+    }
+
+    $.ajax({
+        url : "/cart",
+        type : "PATCH",
+        dataType : "text",
+        data : {
+            workingItemId : wid,
+            type: 'add',
+        },
+        success : function (data) {
+            if(data === 'lackItem'){
+                toastr.warning("库存不足，暂时无法购买")
+            }
+            else{
+                toastr.success("添加成功！")
+            }
+        },
+        error : function (e) {
+            console.log(e.status)
+            console.log(e.responseText)
+        }
+
+    })
+}
+
 $(function () {
 
     //选中特效

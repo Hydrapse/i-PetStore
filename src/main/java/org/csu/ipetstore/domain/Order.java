@@ -297,7 +297,9 @@ public class Order implements Serializable {
         Iterator<CartItem> i = cart.getAllCartItems();
         while (i.hasNext()) {
             CartItem cartItem = (CartItem) i.next();
-            addLineItem(cartItem);
+            if(cartItem.isInStock()){
+                addLineItem(cartItem);
+            }
         }
     }
 

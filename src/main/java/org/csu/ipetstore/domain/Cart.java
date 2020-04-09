@@ -80,9 +80,11 @@ public class Cart implements Serializable {
         Iterator<CartItem> items = getAllCartItems();
         while (items.hasNext()) {
             CartItem cartItem = items.next();
+            if(!cartItem.isInStock()) //如果没货不加入总价计算
+                break;
             Item item = cartItem.getItem();
             BigDecimal listPrice = item.getListPrice();
-            BigDecimal quantity = new BigDecimal(String.valueOf(cartItem.getQuantity()));
+            BigDecimal quantity = new BigDecimal(String.valueOf(Math.abs(cartItem.getQuantity())));
             subTotal = subTotal.add(listPrice.multiply(quantity));
         }
         return subTotal;

@@ -80,18 +80,18 @@ public class AccountController {
             if(!historyCart.isEmpty()){
                 if(currentCart==null || currentCart.isEmpty()){
                     session.setAttribute("cart", historyCart);
-                    logger.debug("原始购物车为空");
+                    logger.info("当前购物车为空");
 
                     return String.join("|", Arrays.asList(
                             "history-cart-true-current-empty", dispatcher));
                 } else{
-                    logger.debug("原始购物车不为空");
+                    logger.info("当前购物车不为空");
 
                     return String.join("|", Arrays.asList(
                             "history-cart-true-current-notEmpty", dispatcher));
                 }
             } else {
-                logger.debug("无历史购物车");
+                logger.info("无历史购物车");
 
                 return String.join("|", Arrays.asList(
                         "history-cart-false", dispatcher));

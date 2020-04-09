@@ -1,12 +1,13 @@
 package org.csu.ipetstore.service;
 
+import org.csu.ipetstore.domain.LineItem;
 import org.csu.ipetstore.domain.Order;
 
 import java.util.List;
 
 public interface OrderService {
     // 插入订单，生成新订单
-    void insertOrder(Order order);
+    List<LineItem> insertOrder(Order order);
 
     // 取得订单
     Order getOrder(int orderId);

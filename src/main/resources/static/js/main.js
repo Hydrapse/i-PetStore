@@ -54,8 +54,8 @@ $(function(){
     //设置悬浮窗
     $("[data-toggle='popover']").popover({
         html : true,
-        title : "<a href='viewLoginForm'>LOGIN NOW</a>",
-        delay:{show:300, hide:700},
+        title : "<a href='login'>LOGIN NOW</a>",
+        delay:{show:300, hide:1700},
         content : "<span>Be a slave of your pet </span><i class='fa fa-thumbs-up'></i>",
         animation: true
     });

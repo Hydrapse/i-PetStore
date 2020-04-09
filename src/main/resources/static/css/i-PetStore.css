@@ -408,3 +408,19 @@ img:hover{
 }
 
 /*----------------------------------Edit Account----------------------------------*/
+input.quantity{
+    width: 62px;
+}
+
+input.empty-stack{
+    background-color: inherit;
+    border:none;
+}
+
+tr.empty-stack{
+    background-color: #dedddd;
+}
+
+tr.lack-stack{
+    background-color: #fbf6df;
+}

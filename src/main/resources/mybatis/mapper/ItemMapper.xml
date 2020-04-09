@@ -61,7 +61,7 @@
       and I.ITEMID = #{itemId}
     </select>
 
-    <select id="getItemByProductName" parameterType="String" resultType="Item">
+    <select id="getItemListByProductName" parameterType="String" resultType="Item">
     SELECT
         I.ITEMID,
         LISTPRICE,
