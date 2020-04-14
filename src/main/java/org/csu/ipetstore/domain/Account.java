@@ -10,7 +10,9 @@ public class Account implements Serializable {
 
     private String username;
     private String password;
+    private String salt;
     private String repeatedPassword;
+
     private String email;
     private String firstName;
     private String lastName;
@@ -34,6 +36,14 @@ public class Account implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getPassword() {
