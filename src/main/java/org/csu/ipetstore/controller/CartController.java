@@ -28,7 +28,7 @@ import java.util.List;
 
 @Controller
 public class CartController {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 
     @Autowired
     private CartService cartService;

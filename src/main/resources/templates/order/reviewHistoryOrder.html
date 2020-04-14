@@ -117,7 +117,19 @@
             <td th:text="${order.courier}"></td>
         </tr>
         <tr>
-            <td colspan="2">Status: [[${order.status}]]</td>
+            <td>Status:</td>
+            <td >
+                [[${order.status}]]
+                <mark th:if="${order.status} == 'P'">待支付</mark>
+                <mark th:if="${order.status} == 'S'">待发货</mark>
+                <mark th:if="${order.status} == 'D'">已发货</mark>
+                <mark th:if="${order.status} == 'D'">交易成功</mark>
+                &nbsp;&nbsp;
+                <a th:href="@{/alipay/easy_pay/} + ${order.orderId}"
+                   th:if="${order.status} == 'P'">
+                    PAY NOW!
+                </a>
+            </td>
         </tr>
         <tr>
             <td colspan="2">

@@ -16,5 +16,10 @@ public interface OrderService {
     List<Order> getOrdersByUsername(String username);
 
     // 生成订单序列
-    int getNextId(String name) ;
+    int getNextId(String name);
+
+    //异步任务，在订单完成之后检查是否支付成功，若不成功删除订单
+    void checkPaymentSuccess(int orderId);
+
+    void setOrderStatus(Order order);
 }

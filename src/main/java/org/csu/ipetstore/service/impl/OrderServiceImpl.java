@@ -1,5 +1,6 @@
 package org.csu.ipetstore.service.impl;
 
+import org.csu.ipetstore.config.AlipayConfig;
 import org.csu.ipetstore.domain.Item;
 import org.csu.ipetstore.domain.LineItem;
 import org.csu.ipetstore.domain.Order;
@@ -12,6 +13,7 @@ import org.csu.ipetstore.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -48,10 +50,11 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDate(new Date());
         order.setOrderId(getNextId("ordernum"));
 
-        for (int i = 0; i < order.getLineItems().size(); i++) {
+        int preLineNum = order.getLineItems().size(); //用户一开始的商品种类数量
+        for (int i = 0; i < preLineNum; i++) {
             LineItem lineItem = order.getLineItems().get(i);
             String itemId = lineItem.getItemId();
-            Integer increment = new Integer(lineItem.getQuantity());
+            Integer decrement = lineItem.getQuantity();
 
             //检查并修改库存
             int qty = itemMapper.getInventoryQuantity(itemId);
@@ -62,22 +65,31 @@ public class OrderServiceImpl implements OrderService {
                 logger.warn("货物 " + itemId + " 库存为空，该物品购买失败");
                 break;
             }
-            else if(qty < increment){
+            else if(qty < decrement){
                 lineItem.setQuantity(qty);
-                increment = qty;
+                decrement = qty;
                 errorList.add(lineItem);
                 logger.warn("货物 " + itemId + " 库存不足，购买数量调整为现有库存");
             }
 
             Map<String, Object> param = new HashMap<>(2);
             param.put("itemId", itemId);
-            param.put("increment", increment);
+            param.put("increment", decrement);
             itemMapper.updateInventoryQuantity(param);
 
         }
 
+        int afterLineNum = order.getLineItems().size(); //经过库存检验后的种类数量
+        if(afterLineNum <= 0){
+            logger.warn("订单购物项为空，取消插入订单");
+            return errorList;
+        }
+
         orderMapper.insertOrder(order);
-        orderMapper.insertOrderStatus(order);
+        logger.info("插入完成");
+        order.setStatus("P"); //默认状态：待支付
+        orderMapper.insertOrderStatus(order, afterLineNum); //订单有4个阶段 现在插入的是第1个阶段
+
         for (int i = 0; i < order.getLineItems().size(); i++) {
             LineItem lineItem = order.getLineItems().get(i);
             lineItem.setOrderId(order.getOrderId());
@@ -127,4 +139,49 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Can't updateSequence!");
         }
     }
+
+    @Override
+    @Transactional //事务 注意要按相同顺序执行，避免死锁
+    @Async //异步执行
+    public void checkPaymentSuccess(int orderId) {
+        StringBuffer temp = new StringBuffer(AlipayConfig.TIMEOUT_EXPRESS);
+        int timeOutMinutes = Integer.parseInt(temp.substring(0, temp.length()-1));
+        try {
+            //在截止时间到的时候 查看支付是否成功
+            Thread.sleep(timeOutMinutes * 6000); //毫秒为单位
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Order order = getOrder(orderId);
+        if("P".equals(order.getStatus())){ //检查订单状态是否仍为待支付
+            logger.warn("订单 " + orderId + " 逾期未支付，订单取消");
+
+            //把减少的库存都加回去
+            List<LineItem> lineItems = order.getLineItems();
+            for (int i = 0; i < lineItems.size(); i++) {
+                LineItem lineItem = lineItems.get(i);
+                String itemId = lineItem.getItemId();
+                Integer increment = Math.abs(lineItem.getQuantity()) * (-1); //负数形式代表添加
+                Map<String, Object> param = new HashMap<>(2);
+                param.put("itemId", itemId);
+                param.put("increment", increment);
+                itemMapper.updateInventoryQuantity(param);
+            }
+
+            //先锁表 ORDERS 和 ORDERSTATUS, 再锁表 LINEITEM 若顺序相反可能会导致死锁
+            orderMapper.deleteOrderByOrderId(orderId);
+            lineItemMapper.deleteLineItemsByOrderId(orderId);
+
+            return;
+        }
+
+        logger.info("订单 " + orderId + " 已支付，验证通过");
+    }
+
+    @Override
+    public void setOrderStatus(Order order) {
+        orderMapper.setOrderStatus(order);
+    }
 }
+

@@ -10,7 +10,7 @@
 <div id="Content">
 
     <div id="BackLink">
-        <a th:href="@{/category(categoryId=${product.categoryId})}">
+        <a th:href="@{/category/} + ${product.categoryId}">
             Return to [[${product.categoryId}]]
         </a>
     </div>

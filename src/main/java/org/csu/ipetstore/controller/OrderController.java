@@ -123,18 +123,27 @@ public class OrderController {
 
         List<LineItem> errorList = orderService.insertOrder(order);
 
-        //结束一笔订单
+        //异步执行，检查在指定时间内是否完成支付，若未完成，删除订单
+        logger.debug("开始异步执行");
+        orderService.checkPaymentSuccess(order.getOrderId());
+        logger.debug("结束异步执行");
+
+        //跳转到支付宝支付
+        String strRedirect = "/alipay/easy_pay/" + order.getOrderId() + "|";
+
+        //清空session中 购物车、订单
         session.setAttribute("cart", new Cart());
         session.setAttribute("order", null);
 
-        //查看已成交订单
-        String orderId = String.valueOf(order.getOrderId());
-
-        String strRedirect = "/order/" + orderId + "|";
-
         if(errorList.isEmpty()){
             return strRedirect;
-        } else{
+        }
+        else if(order.getLineItems().size() <= 0){
+            logger.warn("全部购买项均无货");
+            strRedirect = "/main.html|";
+            return strRedirect + JSON.toJSONString(errorList);
+        }
+        else{
             logger.warn("部分货物购买失败");
             return strRedirect + JSON.toJSONString(errorList);
         }

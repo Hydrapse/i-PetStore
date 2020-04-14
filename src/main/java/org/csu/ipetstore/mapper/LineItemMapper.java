@@ -12,4 +12,6 @@ public interface LineItemMapper {
 
     // 插入商品项
     void insertLineItem(LineItem lineItem);
+
+    void deleteLineItemsByOrderId(int orderId);
 }

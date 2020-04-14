@@ -1,6 +1,7 @@
 package org.csu.ipetstore.mapper;
 
 import org.csu.ipetstore.domain.Order;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,5 +18,9 @@ public interface OrderMapper {
     void insertOrder(Order order);
 
     // 插入新订单状态
-    void insertOrderStatus(Order order);
+    void insertOrderStatus(@Param("order")Order order, @Param("lineNum")int lineNum);
+
+    void deleteOrderByOrderId(int orderId);
+
+    void setOrderStatus(Order order);
 }

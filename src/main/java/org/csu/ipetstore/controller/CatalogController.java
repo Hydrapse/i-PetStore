@@ -30,8 +30,8 @@ public class CatalogController {
     @Autowired
     private CatalogService catalogService;
 
-    @GetMapping("/category")
-    public String viewCategory(@RequestParam("categoryId") String categoryId, Model model){
+    @GetMapping("/category/{categoryId}")
+    public String viewCategory(@PathVariable("categoryId") String categoryId, Model model){
         Category category = catalogService.getCategory(categoryId);
         List<Product> productList = catalogService.getProductListByCategory(categoryId);
 

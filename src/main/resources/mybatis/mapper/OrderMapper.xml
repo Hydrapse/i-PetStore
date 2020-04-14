@@ -86,10 +86,23 @@
               #{shipToFirstName}, #{shipToLastName}, #{creditCard}, #{expiryDate}, #{cardType}, #{locale})
     </insert>
     
-    <insert id="insertOrderStatus" parameterType="Order">
+    <insert id="insertOrderStatus">
         INSERT INTO ORDERSTATUS
             (ORDERID, LINENUM, TIMESTAMP, STATUS)
         VALUES
-            (#{orderId,jdbcType=NUMERIC}, #{orderId,jdbcType=NUMERIC}, #{orderDate,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR})
+            (#{order.orderId,jdbcType=NUMERIC}, #{lineNum,jdbcType=NUMERIC}, #{order.orderDate,jdbcType=TIMESTAMP}, #{order.status,jdbcType=VARCHAR})
     </insert>
+
+    <delete id="deleteOrderByOrderId" parameterType="int">
+        DELETE t1, t2
+        FROM ORDERS t1 LEFT JOIN ORDERSTATUS t2
+        ON t1.ORDERID = t2.ORDERID
+        WHERE t1.ORDERID = #{orderId}
+    </delete>
+
+    <update id="setOrderStatus" parameterType="Order">
+        UPDATE ORDERSTATUS
+        SET STATUS = #{status}
+        WHERE ORDERID = #{orderId}
+    </update>
 </mapper>
