@@ -1,4 +1,4 @@
-package org.csu.ipetstore.service.payment;
+package org.csu.ipetstore.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayClient;
@@ -6,6 +6,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import org.csu.ipetstore.config.AlipayConfig;
 import org.csu.ipetstore.domain.Order;
+import org.csu.ipetstore.service.AlipayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,13 @@ import java.util.Map;
  */
 
 @Service
-public class AlipayService {
+public class AlipayServiceImpl implements AlipayService {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private AlipayClient alipayClient;
 
+    @Override
     public String tradePagePayForm(Order order){
 
         // 创建Alipay支付请求对象

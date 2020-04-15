@@ -148,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
         int timeOutMinutes = Integer.parseInt(temp.substring(0, temp.length()-1));
         try {
             //在截止时间到的时候 查看支付是否成功
-            Thread.sleep(timeOutMinutes * 6000); //毫秒为单位
+            Thread.sleep(timeOutMinutes * 60000); //毫秒为单位
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
