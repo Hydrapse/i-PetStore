@@ -24,19 +24,19 @@
                     <b>Catalog</b>
                 </a>
                 <a th:href="@{/category/FISH#navigation}" class="list-group-item">
-                    <img th:src="@{/images/fish_icon.gif}"/> <span class="badge">4</span>
+                    <img th:src="@{/static/images/fish_icon.gif}"/> <span class="badge">4</span>
                 </a>
                 <a th:href="@{/category/DOGS#navigation}" class="list-group-item">
-                    <img th:src="@{/images/dogs_icon.gif}"/> <span class="badge">6</span>
+                    <img th:src="@{/static/images/dogs_icon.gif}"/> <span class="badge">6</span>
                 </a>
                 <a th:href="@{/category/CATS#navigation}" class="list-group-item">
-                    <img th:src="@{/images/cats_icon.gif}"/> <span class="badge">2</span>
+                    <img th:src="@{/static/images/cats_icon.gif}"/> <span class="badge">2</span>
                 </a>
                 <a th:href="@{/category/REPTILES#navigation}" class="list-group-item">
-                    <img th:src="@{/images/reptiles_icon.gif}"/> <span class="badge">2</span>
+                    <img th:src="@{/static/images/reptiles_icon.gif}"/> <span class="badge">2</span>
                 </a>
                 <a th:href="@{/category/BIRDS#navigation}" class="list-group-item">
-                    <img th:src="@{/images/birds_icon.gif}"/> <span class="badge">2</span>
+                    <img th:src="@{/static/images/birds_icon.gif}"/> <span class="badge">2</span>
                 </a>
                 <a class="list-group-item list-group-item-warning" style="size: 14px"
                    data-toggle="popover" data-placement="right" data-trigger="hover">
@@ -92,7 +92,7 @@
                 <area id="img-cat" alt="Cats" coords="267,282,36" th:href="@{/category/CATS#navigation}" shape="circle"/>
                 <area id="img-bird" alt="Birds" coords="320,213,36" th:href="@{/category/BIRDS#navigation}" shape="circle"/>
             </map>
-            <img id="MainImage" class="img-responsive" th:src="@{/images/splash.gif}"  usemap="#estoremap" />
+            <img id="MainImage" class="img-responsive" th:src="@{/static/images/splash.gif}" usemap="#estoremap" />
 
         </div>
     </div>
@@ -102,7 +102,7 @@
     <div class="row" style="padding:  30px 100px;">
         <div class="col-md-5"  style="padding: 20px 0;">
             <a th:href="@{/product/FL-DSH-01}">
-                <img class="img-circle showcase" th:src="@{/images/kitten2.jpg}" alt="Ragdoll kitten" width="200" height="200">
+                <img class="img-circle showcase" th:src="@{/static/images/kitten2.jpg}" alt="Ragdoll kitten" width="200" height="200">
             </a>
         </div>
         <div class="col-md-7 text-center" style="background: rgb(248,250,252); padding: 20px 40px;">
@@ -120,7 +120,7 @@
 <footer th:replace="common/includeBottom :: #public_footer">
 </footer>
 
-<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/static/js/main.js}"></script>
 
 </body>
 

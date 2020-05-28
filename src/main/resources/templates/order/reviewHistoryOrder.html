@@ -123,7 +123,7 @@
                 <mark th:if="${order.status} == 'P'">待支付</mark>
                 <mark th:if="${order.status} == 'S'">待发货</mark>
                 <mark th:if="${order.status} == 'D'">已发货</mark>
-                <mark th:if="${order.status} == 'D'">交易成功</mark>
+                <mark th:if="${order.status} == 'F'">交易成功</mark>
                 &nbsp;&nbsp;
                 <a th:href="@{/alipay/easy_pay/} + ${order.orderId}"
                    th:if="${order.status} == 'P'">

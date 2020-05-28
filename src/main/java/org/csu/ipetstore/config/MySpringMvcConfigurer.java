@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Created by Enzo Cotter on 2020/1/21.
  */
 @Configuration
-public class MySpringMvcConfigurer {
+public class MySpringMvcConfigurer{
 
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
@@ -22,10 +22,11 @@ public class MySpringMvcConfigurer {
             //添加视图控制器
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController("/").setViewName("catalog/main");
-                registry.addViewController("/index.html").setViewName("catalog/main");
-                registry.addViewController("/main.html").setViewName("catalog/main");
-                registry.addViewController("/main.html").setViewName("catalog/main");
+                registry.addViewController("/").setViewName("index");
+                registry.addViewController("/index.html").setViewName("index");
+                registry.addViewController("/main").setViewName("index");
+                registry.addViewController("/main.html").setViewName("index");
+                registry.addViewController("/main.html").setViewName("index");
                 registry.addViewController("/help.html").setViewName("common/help");
             }
 

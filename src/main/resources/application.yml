@@ -9,9 +9,9 @@ spring:
     cache: false
 
   datasource:
-    username: root
-    password: czl0826
-    url: jdbc:mysql://127.0.0.1:3306/ipetstore?serverTimezone=GMT%2B8
+    username: Ikalos
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/i_petstore?serverTimezone=GMT%2B8
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     #指定数据源
