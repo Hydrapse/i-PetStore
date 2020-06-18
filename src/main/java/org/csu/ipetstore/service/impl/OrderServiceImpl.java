@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
 
         orderMapper.insertOrder(order);
         logger.info("插入完成");
-        order.setStatus("P"); //默认状态：待支付
+        order.setStatus(Order.PREPARED); //默认状态：待支付
         orderMapper.insertOrderStatus(order, afterLineNum); //订单有4个阶段 现在插入的是第1个阶段
 
         for (int i = 0; i < order.getLineItems().size(); i++) {
@@ -154,7 +154,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Order order = getOrder(orderId);
-        if("P".equals(order.getStatus())){ //检查订单状态是否仍为待支付
+        if(Order.PREPARED.equals(order.getStatus())){ //检查订单状态是否仍为待支付
             logger.warn("订单 " + orderId + " 逾期未支付，订单取消");
 
             //把减少的库存都加回去

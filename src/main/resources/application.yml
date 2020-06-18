@@ -1,5 +1,8 @@
-spring:
+server:
+  port: 8081
 
+
+spring:
    #调试环境dev 生产环境prod, 更改active切换配置
   profiles:
     active: dev
@@ -57,7 +60,12 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml #映射配置文件
   config-location: classpath:mybatis/mybatis-config.xml #核心配置文件
 
-server:
-  port: 8081
-
-
+#阿里云OSS
+aliyun-oss:
+  #bucket名称
+  bucketName: i-petstore
+  domainUrl: https://i-petstore.oss-cn-shenzhen.aliyuncs.com/
+  region: oss-cn-shenzhen
+  endpoint : https://oss-cn-shenzhen.aliyuncs.com
+  accessKeyId: LTAI4GJSoE4Wr1951wcTrWJ4
+  accessKeySecret: RIvGbANs2AHNoKQkHsSr9j99wa9vNJ

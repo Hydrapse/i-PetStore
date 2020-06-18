@@ -27,8 +27,9 @@
             <!-- list -->
                 <tr th:each="prod : ${productList}">
                     <td style=" background-color: rgb(245,245,245); font-size: 14px;">
-                        <a th:href="@{/product/} + ${prod.productId} + '#navigation'"
-                            th:utext="${prod.description}">
+                        <a th:href="@{/product/} + ${prod.productId} + '#navigation'">
+                            <img th:src="${prod.imgUrl}">
+                            [[${prod.description}]]
                         </a>
                     </td>
                     <td><b>[[${prod.productId}]]</b></td>

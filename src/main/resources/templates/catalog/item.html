@@ -15,7 +15,9 @@
     <div id="Item">
         <table class="table">
             <tr>
-                <td id="Portrait" th:utext="${product.description}">
+                <td id="Portrait">
+                    <img th:src="${product.imgUrl}">
+                    [[${product.description}]]
                 </td>
             </tr>
             <tr>

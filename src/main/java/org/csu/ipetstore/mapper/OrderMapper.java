@@ -23,4 +23,6 @@ public interface OrderMapper {
     void deleteOrderByOrderId(int orderId);
 
     void setOrderStatus(Order order);
+
+    List<Order> getOrdersByItemId(@Param("itemId")String itemId, @Param("status")String status);
 }

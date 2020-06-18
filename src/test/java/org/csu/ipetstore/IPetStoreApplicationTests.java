@@ -1,23 +1,50 @@
 package org.csu.ipetstore;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import org.csu.ipetstore.domain.Order;
+import org.csu.ipetstore.mapper.ItemMapper;
 import org.csu.ipetstore.mapper.LineItemMapper;
 import org.csu.ipetstore.mapper.OrderMapper;
+import org.csu.ipetstore.service.ManagerService;
 import org.csu.ipetstore.service.payment.PayService;
+import org.csu.ipetstore.util.OSSClientUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 class IPetStoreApplicationTests {
+
+    @Autowired
+    ManagerService managerService;
 
     @Autowired
     OrderMapper orderMapper;
 
     @Autowired
     LineItemMapper lineItemMapper;
+
+    @Autowired
+    ItemMapper itemMapper;
+
+    @Autowired
+    OSSClientUtil ossClientUtil;
+
+    @Test
+    void deleteTest(){
+        Object o = managerService.deleteProduct("AV-CB-01");
+        System.out.println(JSON.toJSONString(o));
+    }
+
+    @Test
+    void ossTest(){
+        String str = "https://i-petstore.oss-cn-shenzhen.aliyuncs.com/images/product/bird1.gif?Expires=1592374052&OSSAccessKeyId=TMP.3KhkiNRJw2wAqdq41zgkR6d2FoRz7biojNfszCXPXzaKt3vgcJ859JpRzhv7ve6uDH4rxq3UJovQmy28tdTBGEHHfkNCPr&Signature=%2F%2BSWbe6R2DVai4glzhbxigNVVck%3D";
+        System.out.println(ossClientUtil.getFileName(str));
+    }
 
     @Test
     void test(){
@@ -27,19 +54,9 @@ class IPetStoreApplicationTests {
     }
 
     @Test
-    void deleteOrder(){
-        int orderId = 1046;
-//        orderMapper.deleteOrderByOrderId(orderId);
-        lineItemMapper.deleteLineItemsByOrderId(orderId);
-    }
-
-    @Test
     void contextLoads() {
-//        System.out.println(String.join("|", Arrays.asList(
-//                "history-cart-true-current-empty", "222")));
-        org.csu.ipetstore.domain.Order order = new Order();
-        System.out.println(order.getOrderId());
-
+        List<Order> list = orderMapper.getOrdersByItemId("EST-20", Order.SUCCEED);
+        System.out.println(list.size());
     }
 
     @Test

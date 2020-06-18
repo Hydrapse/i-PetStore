@@ -48,6 +48,9 @@ public class AccountController {
     @PostMapping("/login")
     public String login(HttpSession session, Account account){
 
+        //调试
+        logger.debug(account.getPassword());
+
         //检测是否已经登录
         if (session.getAttribute("account") != null) {
             logger.warn("已经登录 切换用户请先注销");

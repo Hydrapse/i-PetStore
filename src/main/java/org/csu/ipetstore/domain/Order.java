@@ -9,8 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Order implements Serializable {
-
     private static final long serialVersionUID = 6321792448424424931L;
+
+    //订单状态 status
+    public static String PREPARED = "P"; //待付款
+    public static String SUCCEED = "S"; //待发货
+    public static String DELIVERED = "D"; //已发货
+    public static String FINISHED = "F"; //已结束
 
     private int orderId;
     private String username;

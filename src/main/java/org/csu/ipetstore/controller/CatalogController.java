@@ -74,6 +74,7 @@ public class CatalogController {
         Item item = catalogService.getItem(itemId);
         Product product = item.getProduct();
         logger.info("查看具体项 " + product.getCategoryId() + "/" + product.getProductId() + "/" + itemId);
+        logger.debug(product.getImgUrl());
 
         model.addAttribute("item", item);
         model.addAttribute("product", product);

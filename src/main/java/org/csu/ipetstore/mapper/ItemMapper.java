@@ -18,4 +18,17 @@ public interface ItemMapper {
     Item getItem(String itemId);
 
     List<Item> getItemListByProductName(String productName);
+
+    boolean deleteItem(String itemId);
+
+    boolean setInventoryQuantity(Map<String, Object> param);
+
+    List<String> getItemIdListByProductId(String productId);
+
+    int countItemNum();
+
+    boolean insertItem(Item item);
+
+    boolean insertInventory(Map<String, Object> param);
+
 }

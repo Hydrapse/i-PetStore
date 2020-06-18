@@ -22,4 +22,19 @@ public interface ProductMapper {
 
     //查询自动补全
     List<String> searchProductNameList(String keywords);
+
+    //根据限定条件 分页查询商品
+    List<Product> selectPage(Product product);
+
+    //更新Product
+    void updateProduct(Product product);
+
+    //删除Product
+    boolean deleteProduct(String productId);
+
+    //插入Product
+    boolean insertProduct(Product product);
+
+    //获取某Category对应Product数量
+    int countProductByCategoryId(String categoryId);
 }

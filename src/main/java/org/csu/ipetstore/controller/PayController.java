@@ -45,7 +45,7 @@ public class PayController {
                          HttpSession session,
                          HttpServletResponse response){
         Order order = orderService.getOrder(oid); //TODO：这个应该在缓存中取出
-        if(order == null || !"P".equals(order.getStatus())){
+        if(order == null || !Order.PREPARED.equals(order.getStatus())){
             logger.warn("订单为空或订单状态不为待支付，请按照正常流程下单");
             try {
                 response.sendRedirect("/main.html");
@@ -139,8 +139,8 @@ public class PayController {
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
                 String order_status = order.getStatus();
-                if(order_status.equals("P")){ //该订单未做过处理，仍为待支付状态
-                    order.setStatus("S"); //状态设置为支付成功
+                if(order_status.equals(Order.PREPARED)){ //该订单未做过处理，仍为待支付状态
+                    order.setStatus(Order.SUCCEED); //状态设置为支付成功
                     orderService.setOrderStatus(order);
                     logger.info("设置订单 " + out_trade_no + " 状态为支付成功");
                 }

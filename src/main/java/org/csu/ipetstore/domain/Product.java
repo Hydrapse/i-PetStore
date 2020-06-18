@@ -9,6 +9,7 @@ public class Product implements Serializable {
     private String categoryId;
     private String name;
     private String description;
+    private String imgUrl;
 
     public String getProductId() {
         return productId;
@@ -43,7 +44,16 @@ public class Product implements Serializable {
     }
 
     public String toString() {
-        return getName();
+        String str = categoryId + "/" + productId + "/" + name;
+        return str;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
 }

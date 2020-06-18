@@ -28,6 +28,9 @@ public class MySpringMvcConfigurer{
                 registry.addViewController("/main.html").setViewName("index");
                 registry.addViewController("/main.html").setViewName("index");
                 registry.addViewController("/help.html").setViewName("common/help");
+
+                //测试专用
+                registry.addViewController("/manager/upload").setViewName("ex2/upload");
             }
 
             //注册拦截器

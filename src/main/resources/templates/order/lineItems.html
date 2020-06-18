@@ -50,8 +50,9 @@
             </tr>
             <tr th:each="lineItem : ${order.lineItems}"> <!--th:if="${lineItem.item.quantity > 0}"-->
                 <td id="Portrait">
-                    <a th:href="@{/product/} + ${lineItem.item.product.productId}"
-                       th:utext="${lineItem.item.product.description}">
+                    <a th:href="@{/product/} + ${lineItem.item.product.productId}">
+                        <img th:src="${lineItem.item.product.imgUrl}">
+                        [[${lineItem.item.product.description}]]
                     </a>
                 </td>
                 <td style="text-align: center;" th:text="${lineItem.quantity}"></td>

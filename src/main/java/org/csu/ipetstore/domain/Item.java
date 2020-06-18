@@ -11,8 +11,8 @@ public class Item implements Serializable {
     private String productId;
     private BigDecimal listPrice;
     private BigDecimal unitCost;
-    private int supplierId;
-    private String status;
+    private int supplierId = 1;
+    private String status = "P";
     private String attribute1;
     private String attribute2;
     private String attribute3;

@@ -12,7 +12,8 @@
       PRODUCTID,
       NAME,
       DESCN as description,
-      CATEGORY as categoryId
+      CATEGORY as categoryId,
+      IMG AS imgUrl
     FROM PRODUCT
     WHERE CATEGORY = #{categoryId}
     </select>
@@ -22,7 +23,8 @@
       PRODUCTID,
       NAME,
       DESCN as description,
-      CATEGORY as categoryId
+      CATEGORY as categoryId,
+      IMG AS imgUrl
     FROM PRODUCT
     WHERE PRODUCTID = #{productId}
     </select>
@@ -32,7 +34,8 @@
       PRODUCTID,
       NAME,
       DESCN as description,
-      CATEGORY as categoryId
+      CATEGORY as categoryId,
+      IMG AS imgUrl
     from PRODUCT
     WHERE lower(NAME) like #{keywords}
     </select>
@@ -42,12 +45,59 @@
         PRODUCTID,
         NAME,
         DESCN AS description,
-        CATEGORY AS categoryId
+        CATEGORY AS categoryId,
+        IMG AS imgUrl
     FROM PRODUCT
     WHERE lower(CATEGORY) LIKE #{keywords}
     </select>
 
     <select id="searchProductNameList" parameterType="String" resultType="String">
     SELECT NAME FROM PRODUCT WHERE lower(NAME) LIKE #{keywords}
+    </select>
+
+    <select id="selectPage" resultType="Product">
+        SELECT
+            PRODUCTID,
+            NAME,
+            DESCN AS description,
+            CATEGORY AS categoryId,
+            IMG AS imgUrl
+        FROM PRODUCT
+        WHERE 1=1
+        <if test="name != null and name != ''">
+            and NAME like '%${name}%'
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+            and CATEGORY = #{categoryId}
+        </if>
+    </select>
+
+    <update id="updateProduct">
+        UPDATE PRODUCT
+        <set>
+            <if test="name != null">NAME=#{name},</if>
+            DESCN=#{description},
+            <if test="categoryId != null">CATEGORY=#{categoryId},</if>
+            <if test="imgUrl != null">IMG=#{imgUrl}</if>
+        </set>
+        WHERE PRODUCTID = #{productId}
+    </update>
+    
+    <delete id="deleteProduct">
+        DELETE FROM PRODUCT
+        WHERE PRODUCTID = #{productId}
+    </delete>
+
+    <insert id="insertProduct" parameterType="Order">
+        INSERT INTO PRODUCT
+            (PRODUCTID, CATEGORY, NAME, DESCN, IMG)
+        VALUES
+            (#{productId}, #{categoryId}, #{name}, #{description}, #{imgUrl})
+    </insert>
+    
+    <select id="countProductByCategoryId" resultType="int">
+        SELECT COUNT(PRODUCTID)
+        FROM PRODUCT
+        WHERE CATEGORY = #{categoryId}
     </select>
 </mapper>

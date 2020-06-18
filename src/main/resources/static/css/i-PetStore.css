@@ -1,8 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Righteous);
 
 @font-face {
-    font-family: "yeezy";   /*字体名称*/
-    src: url("font/VCR.ttf");       /*字体源文件*/
+    font-family: "yeezy"; /*字体名称*/
+    src: url("font/VCR.ttf"); /*字体源文件*/
 }
 
 a:link, a:active{

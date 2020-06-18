@@ -23,18 +23,22 @@
       LISTPRICE,
       UNITCOST,
       SUPPLIER AS supplierId,
-      I.PRODUCTID AS "product.productId",
+      I.PRODUCTID AS "productId",
+      P.PRODUCTID AS "product.productId",
       NAME AS "product.name",
       DESCN AS "product.description",
       CATEGORY AS "product.categoryId",
+      IMG AS "product.imgUrl",
       STATUS,
       ATTR1 AS attribute1,
       ATTR2 AS attribute2,
       ATTR3 AS attribute3,
       ATTR4 AS attribute4,
-      ATTR5 AS attribute5
-    FROM ITEM I, PRODUCT P
+      ATTR5 AS attribute5,
+      QTY AS quantity
+    FROM ITEM I, PRODUCT P, INVENTORY V
     WHERE P.PRODUCTID = I.PRODUCTID
+    AND I.ITEMID = V.ITEMID
     AND I.PRODUCTID = #{productId}
     </select>
 
@@ -44,10 +48,12 @@
       LISTPRICE,
       UNITCOST,
       SUPPLIER AS supplierId,
-      I.PRODUCTID AS "product.productId",
+      I.PRODUCTID AS "productId",
+      P.PRODUCTID AS "product.productId",
       NAME AS "product.name",
       DESCN AS "product.description",
       CATEGORY AS "product.categoryId",
+      IMG AS "product.imgUrl",
       STATUS,
       ATTR1 AS attribute1,
       ATTR2 AS attribute2,
@@ -67,10 +73,12 @@
         LISTPRICE,
         UNITCOST,
         SUPPLIER AS supplierId,
-        I.PRODUCTID AS "product.productId",
+        I.PRODUCTID AS "productId",
+        P.PRODUCTID AS "product.productId",
         NAME AS "product.name",
         DESCN AS "product.description",
         CATEGORY AS "product.categoryId",
+        IMG AS "product.imgUrl",
         STATUS,
         ATTR1 AS attribute1,
         ATTR2 AS attribute2,
@@ -84,4 +92,52 @@
       and P.NAME = #{productName}
     </select>
 
+    <delete id="deleteItem">
+    DELETE FROM ITEM
+    WHERE ITEMID = #{itemId}
+    </delete>
+
+    <update id="setInventoryQuantity" parameterType="Map">
+    UPDATE INVENTORY SET
+      QTY = #{qty}
+    WHERE ITEMID = #{itemId}
+    </update>
+
+    <select id="getItemIdListByProductId" resultType="String">
+    SELECT
+        ITEMID
+    FROM ITEM
+    where PRODUCTID = #{productId}
+    </select>
+
+    <select id="countItemNum">
+    SELECT COUNT(*)
+    FROM ITEM
+    </select>
+    
+    <insert id="insertItem">
+        INSERT INTO ITEM(
+            ITEMID,
+            PRODUCTID,
+            LISTPRICE,
+            UNITCOST,
+            SUPPLIER,
+            STATUS,
+            ATTR1,
+            ATTR2,
+            ATTR3,
+            ATTR4,
+            ATTR5
+        )
+        VALUES
+            (#{itemId}, #{productId}, #{listPrice}, #{unitCost},  #{supplierId}, #{status},
+             #{attribute1}, #{attribute2}, #{attribute3}, #{attribute4}, #{attribute5})
+    </insert>
+
+    <insert id="insertInventory">
+    INSERT INTO INVENTORY
+        (ITEMID, QTY)
+    VALUES
+        (#{itemId}, #{qty})
+    </insert>
 </mapper>

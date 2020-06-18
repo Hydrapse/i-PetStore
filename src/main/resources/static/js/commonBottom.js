@@ -34,7 +34,8 @@ function addItemToCart(wid){
             type: 'add',
         },
         success : function (data) {
-            if(data === 'lackItem'){
+            var arr = data.split("|");
+            if(arr[0] === 'lackItem'){
                 toastr.warning("库存不足，暂时无法购买")
             }
             else{

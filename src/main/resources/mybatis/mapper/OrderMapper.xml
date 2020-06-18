@@ -105,4 +105,42 @@
         SET STATUS = #{status}
         WHERE ORDERID = #{orderId}
     </update>
+
+    <select id="getOrdersByItemId" resultType="Order">
+        SELECT
+            BILLADDR1 AS billAddress1 ,
+            BILLADDR2 AS billAddress2 ,
+            BILLCITY ,
+            BILLCOUNTRY ,
+            BILLSTATE ,
+            BILLTOFIRSTNAME ,
+            BILLTOLASTNAME ,
+            BILLZIP ,
+            SHIPADDR1 AS shipAddress1 ,
+            SHIPADDR2 AS shipAddress2 ,
+            SHIPCITY ,
+            SHIPCOUNTRY ,
+            SHIPSTATE ,
+            SHIPTOFIRSTNAME ,
+            SHIPTOLASTNAME ,
+            SHIPZIP ,
+            CARDTYPE ,
+            COURIER ,
+            CREDITCARD ,
+            EXPRDATE AS expiryDate ,
+            LOCALE ,
+            ORDERDATE ,
+            ORDERS.ORDERID ,
+            TOTALPRICE ,
+            USERID AS username ,
+            STATUS
+        FROM ORDERS INNER JOIN (
+            SELECT ORDERSTATUS.ORDERID, STATUS
+			FROM ORDERSTATUS INNER JOIN LINEITEM ON ORDERSTATUS.ORDERID = LINEITEM.orderid
+			WHERE STATUS = #{status}
+			AND itemid = #{itemId}
+        )   AS TEMP
+		ON ORDERS.ORDERID = TEMP.ORDERID
+    </select>
+
 </mapper>
