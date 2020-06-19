@@ -2,6 +2,9 @@ package org.csu.ipetstore.service;
 
 import org.csu.ipetstore.domain.LineItem;
 import org.csu.ipetstore.domain.Order;
+import org.csu.ipetstore.domain.request.OrderRequest;
+import org.csu.ipetstore.domain.request.PageRequest;
+import org.csu.ipetstore.domain.result.PageResult;
 
 import java.util.List;
 
@@ -22,4 +25,7 @@ public interface OrderService {
     void checkPaymentSuccess(int orderId);
 
     void setOrderStatus(Order order);
+
+    //根据参数分页查询订单
+    PageResult findOrderPage(OrderRequest orderRequest, PageRequest pageRequest);
 }

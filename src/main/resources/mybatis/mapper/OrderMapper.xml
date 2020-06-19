@@ -143,4 +143,44 @@
 		ON ORDERS.ORDERID = TEMP.ORDERID
     </select>
 
+    <select id="getOrdersByOrderRequest" resultType="Order">
+        SELECT
+            BILLADDR1 AS billAddress1 ,
+            BILLADDR2 AS billAddress2 ,
+            BILLCITY ,
+            BILLCOUNTRY ,
+            BILLSTATE ,
+            BILLTOFIRSTNAME ,
+            BILLTOLASTNAME ,
+            BILLZIP ,
+            SHIPADDR1 AS shipAddress1 ,
+            SHIPADDR2 AS shipAddress2 ,
+            SHIPCITY ,
+            SHIPCOUNTRY ,
+            SHIPSTATE ,
+            SHIPTOFIRSTNAME ,
+            SHIPTOLASTNAME ,
+            SHIPZIP ,
+            CARDTYPE ,
+            COURIER ,
+            CREDITCARD ,
+            EXPRDATE AS expiryDate ,
+            LOCALE ,
+            ORDERDATE ,
+            ORDERS.ORDERID ,
+            TOTALPRICE ,
+            USERID AS username ,
+            STATUS
+        FROM ORDERS, ORDERSTATUS
+        WHERE ORDERS.ORDERID = ORDERSTATUS.ORDERID
+        and date(ORDERDATE) between #{startDate} and #{endDate}
+        <if test="username != null and username != ''">
+            and USERID like '%${username}%'
+        </if>
+        <if test="status != null and status != ''">
+            and STATUS = UPPER(#{status})
+        </if>
+        ORDER BY ORDERDATE
+    </select>
+
 </mapper>

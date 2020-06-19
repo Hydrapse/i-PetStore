@@ -1,4 +1,4 @@
-package org.csu.ipetstore.domain;
+package org.csu.ipetstore.domain.result;
 
 /**
  * @author Hydra

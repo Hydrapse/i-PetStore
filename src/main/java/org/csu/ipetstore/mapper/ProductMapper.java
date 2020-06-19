@@ -1,6 +1,7 @@
 package org.csu.ipetstore.mapper;
 
 import org.csu.ipetstore.domain.Product;
+import org.csu.ipetstore.domain.request.ProductRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface ProductMapper {
     List<String> searchProductNameList(String keywords);
 
     //根据限定条件 分页查询商品
-    List<Product> selectPage(Product product);
+    List<Product> getProductsByProductRequest(ProductRequest productKey);
 
     //更新Product
     void updateProduct(Product product);

@@ -1,8 +1,8 @@
 package org.csu.ipetstore.util;
 
 import com.github.pagehelper.PageInfo;
-import org.csu.ipetstore.domain.PageRequest;
-import org.csu.ipetstore.domain.PageResult;
+import org.csu.ipetstore.domain.request.PageRequest;
+import org.csu.ipetstore.domain.result.PageResult;
 
 /**
  * @author Hydra

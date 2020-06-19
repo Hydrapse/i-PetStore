@@ -45,7 +45,7 @@ public class CatalogController {
     @GetMapping("/product/{productId}")
     public String viewProduct(@PathVariable("productId")String productId, Model model){
         Product product = catalogService.getProduct(productId);
-        List<Item> itemList = catalogService.getItemListByProduct(productId);
+        List<Item> itemList = catalogService.getItemListByProductId(productId);
         logger.info("查看产品 "+ product.getCategoryId() + "/" + productId);
 
         model.addAttribute("product", product);

@@ -17,7 +17,7 @@
     WHERE ITEMID = #{itemId}
     </select>
 
-    <select id="getItemListByProduct" parameterType="String" resultType="Item">
+    <select id="getItemListByProductId" parameterType="String" resultType="Item">
     SELECT
       I.ITEMID,
       LISTPRICE,

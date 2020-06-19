@@ -25,14 +25,14 @@ public final class ResultCode {
     public static final int USER_ACCOUNT_FORBIDDEN = 20004; // 用户账户已被禁用
     public static final int USER_HAS_EXIST = 20005;// 用户已存在
 
-    // 数据错误
+    // 商品错误
     public static final int PRODUCT_NOT_FOUND = 30001; //没有对应product
     public static final int ITEM_NOT_EXIST = 30002;// product不存在item
     public static final int ITEM_NOT_FOUND = 30003;// 没有对应item
     public static final int INVENTORY_HAS_EXIST = 30004;// 库存已存在
 
-    // 系统错误
-    public static final int SYSTEM_INNER_ERROR = 40001; // 系统内部错误
+    // 订单错误
+    public static final int ORDER_NOT_FOUND = 40001; //没有对应product
 
     // 业务错误
     public static final int ITEM_UNDELIVERED_CANT_DELETE= 50001; // 若未发货订单中含有item, 则无法删除该item

@@ -55,7 +55,7 @@
     SELECT NAME FROM PRODUCT WHERE lower(NAME) LIKE #{keywords}
     </select>
 
-    <select id="selectPage" resultType="Product">
+    <select id="getProductByProductRequest" resultType="Product">
         SELECT
             PRODUCTID,
             NAME,
@@ -67,8 +67,11 @@
         <if test="name != null and name != ''">
             and NAME like '%${name}%'
         </if>
-        <if test="categoryId != null and categoryId != ''">
-            and CATEGORY = #{categoryId}
+        <if test="categoryIdList != null and categoryIdList.length > 0">
+            and CATEGORY in
+            <foreach collection="categoryIdList" item="categoryId" open="(" close=")" separator=",">
+                #{categoryId}
+            </foreach>
         </if>
     </select>
 

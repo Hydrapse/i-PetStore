@@ -1,7 +1,10 @@
 package org.csu.ipetstore.mapper;
 
 import org.csu.ipetstore.domain.Account;
+import org.csu.ipetstore.domain.request.UserRequest;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface AccountMapper {
@@ -22,5 +25,7 @@ public interface AccountMapper {
 
     void updateSignon(Account account);
 
-    String getBannerName(String catrgory);
+    String getBannerName(String category);
+
+    List<Account> getUsersByUserRequest(UserRequest userKey);
 }

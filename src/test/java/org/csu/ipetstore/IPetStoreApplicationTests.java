@@ -8,6 +8,7 @@ import org.csu.ipetstore.mapper.ItemMapper;
 import org.csu.ipetstore.mapper.LineItemMapper;
 import org.csu.ipetstore.mapper.OrderMapper;
 import org.csu.ipetstore.service.ManagerService;
+import org.csu.ipetstore.service.OrderService;
 import org.csu.ipetstore.service.payment.PayService;
 import org.csu.ipetstore.util.OSSClientUtil;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,13 @@ class IPetStoreApplicationTests {
     @Autowired
     OSSClientUtil ossClientUtil;
 
+    @Autowired
+    OrderService orderService;
+
+    @Test
+    void orderTest(){
+    }
+
     @Test
     void deleteTest(){
         Object o = managerService.deleteProduct("AV-CB-01");
@@ -44,13 +52,6 @@ class IPetStoreApplicationTests {
     void ossTest(){
         String str = "https://i-petstore.oss-cn-shenzhen.aliyuncs.com/images/product/bird1.gif?Expires=1592374052&OSSAccessKeyId=TMP.3KhkiNRJw2wAqdq41zgkR6d2FoRz7biojNfszCXPXzaKt3vgcJ859JpRzhv7ve6uDH4rxq3UJovQmy28tdTBGEHHfkNCPr&Signature=%2F%2BSWbe6R2DVai4glzhbxigNVVck%3D";
         System.out.println(ossClientUtil.getFileName(str));
-    }
-
-    @Test
-    void test(){
-        StringBuffer temp = new StringBuffer("30m");
-        int timeOutMinutes = Integer.parseInt(temp.substring(0, temp.length()-1));
-        System.out.println(timeOutMinutes);
     }
 
     @Test

@@ -3,7 +3,15 @@ package org.csu.ipetstore.service;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.csu.ipetstore.domain.*;
+import org.csu.ipetstore.domain.Account;
+import org.csu.ipetstore.domain.Item;
+import org.csu.ipetstore.domain.Order;
+import org.csu.ipetstore.domain.Product;
+import org.csu.ipetstore.domain.request.PageRequest;
+import org.csu.ipetstore.domain.request.ProductRequest;
+import org.csu.ipetstore.domain.request.UserRequest;
+import org.csu.ipetstore.domain.result.PageResult;
+import org.csu.ipetstore.mapper.AccountMapper;
 import org.csu.ipetstore.mapper.ItemMapper;
 import org.csu.ipetstore.mapper.OrderMapper;
 import org.csu.ipetstore.mapper.ProductMapper;
@@ -44,20 +52,23 @@ public class ManagerService {
     OrderMapper orderMapper;
 
     @Autowired
+    AccountMapper accountMapper;
+
+    @Autowired
     OSSClientUtil ossClientUtil;
 
     @Autowired
     IDSequenceUtil idSequenceUtil;
 
     //查找对应商品
-    public PageResult findPage(PageRequest pageRequest, Product product) {
+    public PageResult findProductPage(ProductRequest productKey, PageRequest pageRequest) {
         int pageNum = pageRequest.getPageNum();
         int pageSize = pageRequest.getPageSize();
 
         //只有紧跟在PageHelper.startPage方法后的第一个Mybatis的查询（Select）方法会被分页。
         //将前台分页查询参数传入并拦截MyBtis执行实现分页效果
         PageHelper.startPage(pageNum, pageSize);
-        List<Product> productList = productMapper.selectPage(product);
+        List<Product> productList = productMapper.getProductsByProductRequest(productKey);
 
         return PageUtil.getPageResult(pageRequest, new PageInfo<>(productList));
     }
@@ -193,5 +204,16 @@ public class ManagerService {
         }
         logger.info(itemId + " 插入成功");
         return item;
+    }
+
+    //查找对应用户
+    public PageResult findUserPage(UserRequest userKey, PageRequest pageRequest){
+        int pageNum = pageRequest.getPageNum();
+        int pageSize = pageRequest.getPageSize();
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<Account> productList = accountMapper.getUsersByUserRequest(userKey);
+
+        return PageUtil.getPageResult(pageRequest, new PageInfo<>(productList));
     }
 }

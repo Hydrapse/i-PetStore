@@ -1,6 +1,7 @@
 package org.csu.ipetstore.mapper;
 
 import org.csu.ipetstore.domain.Order;
+import org.csu.ipetstore.domain.request.OrderRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +26,6 @@ public interface OrderMapper {
     void setOrderStatus(Order order);
 
     List<Order> getOrdersByItemId(@Param("itemId")String itemId, @Param("status")String status);
+
+    List<Order> getOrdersByOrderRequest(OrderRequest orderRequest);
 }

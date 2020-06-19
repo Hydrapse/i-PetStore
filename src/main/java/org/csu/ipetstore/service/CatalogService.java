@@ -18,7 +18,7 @@ public interface CatalogService {
     // TODO enable using more than one keyword
     public List<Product> searchProductList(String keyword);
 
-    public List<Item> getItemListByProduct(String productId);
+    public List<Item> getItemListByProductId(String productId);
 
     public Item getItem(String itemId);
 

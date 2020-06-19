@@ -65,8 +65,8 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public List<Item> getItemListByProduct(String productId) {
-        return itemMapper.getItemListByProduct(productId);
+    public List<Item> getItemListByProductId(String productId) {
+        return itemMapper.getItemListByProductId(productId);
     }
 
     @Override

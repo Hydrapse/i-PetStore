@@ -1,15 +1,18 @@
 package org.csu.ipetstore.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.csu.ipetstore.config.AlipayConfig;
-import org.csu.ipetstore.domain.Item;
-import org.csu.ipetstore.domain.LineItem;
-import org.csu.ipetstore.domain.Order;
-import org.csu.ipetstore.domain.Sequence;
+import org.csu.ipetstore.domain.*;
+import org.csu.ipetstore.domain.request.OrderRequest;
+import org.csu.ipetstore.domain.request.PageRequest;
+import org.csu.ipetstore.domain.result.PageResult;
 import org.csu.ipetstore.mapper.ItemMapper;
 import org.csu.ipetstore.mapper.LineItemMapper;
 import org.csu.ipetstore.mapper.OrderMapper;
 import org.csu.ipetstore.mapper.SequenceMapper;
 import org.csu.ipetstore.service.OrderService;
+import org.csu.ipetstore.util.PageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -182,6 +188,33 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void setOrderStatus(Order order) {
         orderMapper.setOrderStatus(order);
+    }
+
+    @Override
+    public PageResult findOrderPage(OrderRequest orderKey, PageRequest pageRequest){
+        //如果endDate为空, 则填入当前时间
+        String endDate = orderKey.getEndDate();
+        if(StringUtils.isEmpty(endDate)){
+            ZonedDateTime zdt = ZonedDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            endDate = formatter.format(zdt);
+            orderKey.setEndDate(endDate);
+        }
+
+        //分页设置
+        int pageNum = pageRequest.getPageNum();
+        int pageSize = pageRequest.getPageSize();
+
+        //必须紧挨着查询语句
+        PageHelper.startPage(pageNum, pageSize);
+        List<Order> orderList = orderMapper.getOrdersByOrderRequest(orderKey);
+
+        //插入lineItems
+        for(Order order : orderList){
+            order.setLineItems(lineItemMapper.getLineItemsByOrderId(order.getOrderId()));
+        }
+
+        return PageUtil.getPageResult(pageRequest, new PageInfo<>(orderList));
     }
 }
 

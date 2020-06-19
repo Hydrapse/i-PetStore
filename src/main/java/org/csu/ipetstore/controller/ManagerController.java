@@ -3,13 +3,17 @@ package org.csu.ipetstore.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.csu.ipetstore.domain.Item;
-import org.csu.ipetstore.domain.PageRequest;
-import org.csu.ipetstore.domain.PageResult;
+import org.csu.ipetstore.domain.request.OrderRequest;
+import org.csu.ipetstore.domain.request.PageRequest;
+import org.csu.ipetstore.domain.request.ProductRequest;
+import org.csu.ipetstore.domain.request.UserRequest;
+import org.csu.ipetstore.domain.result.PageResult;
 import org.csu.ipetstore.domain.Product;
 import org.csu.ipetstore.result.CommonResult;
 import org.csu.ipetstore.result.ResultCode;
 import org.csu.ipetstore.service.CatalogService;
 import org.csu.ipetstore.service.ManagerService;
+import org.csu.ipetstore.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,9 @@ public class ManagerController {
     @Autowired
     CatalogService catalogService;
 
+    @Autowired
+    OrderService orderService;
+
     @ApiOperation("测试入口")
     @GetMapping("/hello")
     @ResponseStatus(HttpStatus.OK)
@@ -48,12 +55,14 @@ public class ManagerController {
 
     @ApiOperation("根据限定条件获取product列表")
     @GetMapping("/products")
-    public CommonResult productList(PageRequest pageRequest, Product prodKey){
-        logger.info("获取商品列表: keyword=" + prodKey.getName() + ", CategoryId=" +
-                prodKey.getCategoryId());
-        logger.info("分页数据: " + pageRequest.toString());
+    public CommonResult productList(ProductRequest prodKey, PageRequest pageRequest){
+        //初始校验pageRequest
+        pageRequest.initialValidate(1, 6);
 
-        PageResult pageResult = managerService.findPage(pageRequest, prodKey);
+        logger.info("查询请求:" + prodKey);
+        logger.info("分页数据: " + pageRequest);
+
+        PageResult pageResult = managerService.findProductPage(prodKey, pageRequest);
 
         if(pageResult.getPageSize() == 0) {
             return CommonResult.failure(ResultCode.PRODUCT_NOT_FOUND, "不存在匹配商品");
@@ -70,7 +79,7 @@ public class ManagerController {
         }
 
         Product product = catalogService.getProduct(productId);
-        List<Item> itemList = catalogService.getItemListByProduct(productId);
+        List<Item> itemList = catalogService.getItemListByProductId(productId);
 
         if(product == null){
             return CommonResult.failure(ResultCode.PRODUCT_NOT_FOUND, "找不到对应product");
@@ -184,4 +193,43 @@ public class ManagerController {
         }
         return CommonResult.success(rtnItem);
     }
+
+    @ApiOperation("根据条件分页查询订单")
+    @GetMapping("/orders")
+    public CommonResult orderList(OrderRequest orderRequest, PageRequest pageRequest){
+        //初始校验pageRequest
+        pageRequest.initialValidate(1, 10);
+
+        logger.info("查询请求: " + orderRequest);
+        logger.info("分页数据: " + pageRequest);
+
+        //根据参数查询
+        PageResult pageResult = orderService.findOrderPage(orderRequest, pageRequest);
+        if(pageResult.getPageSize() == 0) {
+            logger.info("不存在匹配订单");
+            return CommonResult.failure(ResultCode.ORDER_NOT_FOUND, "不存在匹配订单");
+        }
+        return CommonResult.success(pageResult);
+    }
+
+    @ApiOperation("根据条件分页查询用户信息")
+    @GetMapping("/users")
+    public CommonResult userList(UserRequest userRequest, PageRequest pageRequest){
+        //初始校验pageRequest
+        pageRequest.initialValidate(1, 10);
+
+        logger.info("查询请求: " + userRequest);
+        logger.info("分页数据: " + pageRequest);
+
+        //根据参数查询
+        PageResult pageResult = managerService.findUserPage(userRequest, pageRequest);
+        if(pageResult.getPageSize() == 0) {
+            logger.info("不存在匹配用户");
+            return CommonResult.failure(ResultCode.USER_NOT_EXIST, "不存在匹配用户");
+        }
+        return CommonResult.success(pageResult);
+    }
+
+
+
 }
