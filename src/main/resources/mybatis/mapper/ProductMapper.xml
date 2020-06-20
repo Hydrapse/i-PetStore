@@ -55,7 +55,7 @@
     SELECT NAME FROM PRODUCT WHERE lower(NAME) LIKE #{keywords}
     </select>
 
-    <select id="getProductByProductRequest" resultType="Product">
+    <select id="getProductsByProductRequest" resultType="Product">
         SELECT
             PRODUCTID,
             NAME,
@@ -80,7 +80,6 @@
         <set>
             <if test="name != null">NAME=#{name},</if>
             DESCN=#{description},
-            <if test="categoryId != null">CATEGORY=#{categoryId},</if>
             <if test="imgUrl != null">IMG=#{imgUrl}</if>
         </set>
         WHERE PRODUCTID = #{productId}

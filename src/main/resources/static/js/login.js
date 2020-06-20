@@ -1,3 +1,9 @@
+// var token = $("meta[name='_csrf']").attr("content");
+// var header = $("meta[name='_csrf_header']").attr("content");
+// $(document).ajaxSend(function(e, xhr, options) {
+//     xhr.setRequestHeader(header, token);
+// });
+
 var xhr = new XMLHttpRequest();
 
 //返回false代表登录失败，其他都代表登录成功（session里面有account）

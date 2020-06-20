@@ -110,7 +110,7 @@
     where PRODUCTID = #{productId}
     </select>
 
-    <select id="countItemNum">
+    <select id="countItemNum" resultType="int">
     SELECT COUNT(*)
     FROM ITEM
     </select>

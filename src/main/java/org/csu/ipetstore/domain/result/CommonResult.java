@@ -1,4 +1,4 @@
-package org.csu.ipetstore.result;
+package org.csu.ipetstore.domain.result;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public final class CommonResult implements Serializable {
 
     public static CommonResult success() {
         CommonResult result = new CommonResult();
-        result.setCode(200);
+        result.setCode(ResultCode.SUCCESS);
         return result;
     }
 

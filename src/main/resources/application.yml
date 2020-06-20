@@ -42,10 +42,11 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
   mail:
-    host: smtp.qq.com
-    username: 1041422509@qq.com
-    password: yrdrmowbbphqbgaa
+    host: smtp.163.com
+    username: 18923777768@163.com
+    password:
     default-encoding: utf-8
     properties:
       mail:
@@ -67,5 +68,7 @@ aliyun-oss:
   domainUrl: https://i-petstore.oss-cn-shenzhen.aliyuncs.com/
   region: oss-cn-shenzhen
   endpoint : https://oss-cn-shenzhen.aliyuncs.com
-  accessKeyId: LTAI4GJSoE4Wr1951wcTrWJ4
-  accessKeySecret: RIvGbANs2AHNoKQkHsSr9j99wa9vNJ
+  accessKeyId: LTAI4G3TGyWdPb424gbPk71A
+  accessKeySecret:
+
+

@@ -304,6 +304,11 @@ img:hover{
     background-color: rgb(245, 245, 245);
 }
 
+#Portrait img {
+    height: 125px;
+    width: 125px;
+}
+
 #Error {
     padding-top: 50px;
     padding-bottom: 50px;

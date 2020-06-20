@@ -31,6 +31,7 @@ public class MySpringMvcConfigurer{
 
                 //测试专用
                 registry.addViewController("/manager/upload").setViewName("ex2/upload");
+//                registry.addViewController("/manager/login").setViewName("ex2/login");
             }
 
             //注册拦截器

@@ -15,7 +15,7 @@ import org.csu.ipetstore.mapper.AccountMapper;
 import org.csu.ipetstore.mapper.ItemMapper;
 import org.csu.ipetstore.mapper.OrderMapper;
 import org.csu.ipetstore.mapper.ProductMapper;
-import org.csu.ipetstore.result.ResultCode;
+import org.csu.ipetstore.domain.result.ResultCode;
 import org.csu.ipetstore.util.IDSequenceUtil;
 import org.csu.ipetstore.util.OSSClientUtil;
 import org.csu.ipetstore.util.PageUtil;

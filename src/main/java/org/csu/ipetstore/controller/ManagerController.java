@@ -9,8 +9,8 @@ import org.csu.ipetstore.domain.request.ProductRequest;
 import org.csu.ipetstore.domain.request.UserRequest;
 import org.csu.ipetstore.domain.result.PageResult;
 import org.csu.ipetstore.domain.Product;
-import org.csu.ipetstore.result.CommonResult;
-import org.csu.ipetstore.result.ResultCode;
+import org.csu.ipetstore.domain.result.CommonResult;
+import org.csu.ipetstore.domain.result.ResultCode;
 import org.csu.ipetstore.service.CatalogService;
 import org.csu.ipetstore.service.ManagerService;
 import org.csu.ipetstore.service.OrderService;
@@ -59,7 +59,7 @@ public class ManagerController {
         //初始校验pageRequest
         pageRequest.initialValidate(1, 6);
 
-        logger.info("查询请求:" + prodKey);
+        logger.info("查询请求: " + prodKey);
         logger.info("分页数据: " + pageRequest);
 
         PageResult pageResult = managerService.findProductPage(prodKey, pageRequest);
@@ -105,8 +105,8 @@ public class ManagerController {
         if(StringUtils.isEmpty(productId)){
             return CommonResult.failure("原productId为空");
         }
-        else if(StringUtils.isEmpty(product.getName()) || StringUtils.isEmpty(product.getCategoryId())){
-            return CommonResult.failure("product信息不完整");
+        else if(StringUtils.isEmpty(product.getName())){
+            return CommonResult.failure("productName未填写");
         }
         //检验productId是否正确
         Product preProd = catalogService.getProduct(productId);
@@ -176,7 +176,7 @@ public class ManagerController {
     }
 
     @ApiOperation("新增item")
-    @PatchMapping("/products/items")
+    @PostMapping("/products/items")
     public CommonResult addItem(Item item){
         if(StringUtils.isEmpty(item.getProductId())){
             logger.warn("item插入时productId为空");
